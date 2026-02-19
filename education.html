@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Education Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .preview-link {
+      color: #0066FF;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #0066FF;
+      box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+    }
+
+    .date-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .date-row .form-group {
+      flex: 1;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-group input {
+      margin-right: 10px;
+    }
+
+    .add-description {
+      color: #0066FF;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background: #f0f0f0;
+    }
+
+    .btn-save {
+      background: #0066FF;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0052cc;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      border: 1px solid #dc3545;
+    }
+
+    .btn-delete:hover {
+      background: #c82333;
+      border-color: #c82333;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .title {
+        font-size: 24px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .date-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1 class="title">Tell us about your education</h1>
+        <p class="subtitle">Include every school, even if you're still there or didn't graduate.</p>
+      </div>
+      <a href="#" class="preview-link">Preview</a>
+    </div>
+
+    <form id="educationForm">
+      <div class="form-group">
+        <label for="schoolName">School Name</label>
+        <input type="text" id="schoolName" class="form-control" placeholder="e.g. San Jose State">
+      </div>
+
+      <div class="form-group">
+        <label for="schoolLocation">School Location</label>
+        <input type="text" id="schoolLocation" class="form-control" placeholder="e.g. San Jose">
+      </div>
+
+      <div class="form-group">
+        <label for="degree">Degree</label>
+        <select id="degree" class="form-control">
+          <option value="">Select Degree</option>
+          <option value="Bachelor's">Bachelor's</option>
+          <option value="Master's">Master's</option>
+          <option value="PhD">PhD</option>
+          <option value="Diploma">Diploma</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="fieldOfStudy">Field of Study</label>
+        <input type="text" id="fieldOfStudy" class="form-control" placeholder="e.g. Accountant">
+      </div>
+
+      <div class="date-row">
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="month" id="startDate" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="endDate">Graduation Date or End Date</label>
+          <input type="month" id="endDate" class="form-control">
+        </div>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="currentlyAttend">
+        <label for="currentlyAttend">I currently attend here</label>
+      </div>
+
+      <a href="#" class="add-description">+ Add a description to this section</a>
+
+      <div class="buttons">
+        <button type="button" class="btn btn-back" id="backBtn" link href="./profile.html">← Back</button>
+        <button type="button" class="btn btn-delete" onclick="deleteEducation()">Delete</button>
+        <button type="button" class="btn btn-save" id="saveBtn">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const currentlyAttendCheckbox = document.getElementById('currentlyAttend');
+    const endDateInput = document.getElementById('endDate');
+    const saveBtn = document.getElementById('saveBtn');
+    const backBtn = document.getElementById('backBtn');
+
+    // Disable end date when checkbox is checked
+    currentlyAttendCheckbox.addEventListener('change', function() {
+      endDateInput.disabled = this.checked;
+      if (this.checked) {
+        endDateInput.value = '';
+      }
+    });
+
+    // Save button logic
+    saveBtn.addEventListener('click', function() {
+      const data = {
+        schoolName: document.getElementById('schoolName').value,
+        schoolLocation: document.getElementById('schoolLocation').value,
+        degree: document.getElementById('degree').value,
+        fieldOfStudy: document.getElementById('fieldOfStudy').value,
+        startDate: document.getElementById('startDate').value,
+        endDate: document.getElementById('endDate').value,
+        currentlyAttend: document.getElementById('currentlyAttend').checked
+      };
+
+      console.log(data);
+      localStorage.setItem('educationData', JSON.stringify(data));
+      alert('Education data saved successfully!');
+    });
+
+    // Delete button logic
+    function deleteEducation() {
+      if (confirm('Are you sure you want to delete your education information?')) {
+        localStorage.removeItem('educationData');
+        // Reset form fields
+        document.getElementById('schoolName').value = '';
+        document.getElementById('schoolLocation').value = '';
+        document.getElementById('degree').value = '';
+        document.getElementById('fieldOfStudy').value = '';
+        document.getElementById('startDate').value = '';
+        document.getElementById('endDate').value = '';
+        document.getElementById('currentlyAttend').checked = false;
+        alert('Education information deleted successfully!');
+      }
+    }
+
+    // Back button logic
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+  </script>
+</body>
+</html>

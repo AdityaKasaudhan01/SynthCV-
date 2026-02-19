@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Additional Information</title>
+  <link rel="stylesheet" href="../tryM3/chatbot.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .right-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .right-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .right-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .preview-link {
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .preview-link:hover {
+      text-decoration: underline;
+    }
+
+    .right-subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .editor-container {
+      margin-bottom: 20px;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.3s ease;
+    }
+
+    .toolbar-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .toolbar-btn.active {
+      background: #0066FF;
+      color: white;
+      border-color: #0066FF;
+    }
+
+    .additional-editor {
+      width: 100%;
+      min-height: 300px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-y: auto;
+    }
+
+    .additional-editor:focus {
+      outline: none;
+      border-color: #0066FF;
+      box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: white;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background: #f0f0f0;
+    }
+
+    .btn-save {
+      background: #0066FF;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0052cc;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      text-align: center;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .modal-content h2 {
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #000;
+    }
+
+    .modal-content p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      .right-title {
+        font-size: 20px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .editor-toolbar {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="right-section">
+      <div class="right-header">
+        <div class="right-title">Additional Information</div>
+        <a class="preview-link" id="previewLink">Preview</a>
+      </div>
+
+      <div class="right-subtitle">Add any additional information you'd like to include in your profile.</div>
+
+      <div class="editor-container">
+        <div class="editor-toolbar">
+          <button class="toolbar-btn" onclick="formatText('bold')" id="boldBtn">Bold</button>
+          <button class="toolbar-btn" onclick="formatText('italic')" id="italicBtn">Italic</button>
+          <button class="toolbar-btn" onclick="formatText('underline')" id="underlineBtn">Underline</button>
+          <button class="toolbar-btn" onclick="formatText('insertUnorderedList')" id="bulletBtn">Bullet list</button>
+          <button class="toolbar-btn" onclick="formatText('undo')" id="undoBtn">Undo</button>
+          <button class="toolbar-btn" onclick="formatText('redo')" id="redoBtn">Redo</button>
+        </div>
+        <div class="additional-editor" id="additionalEditor" contenteditable="true"></div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="btn btn-back" id="backBtn">Back</button>
+        <button type="button" class="btn btn-save" id="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal" id="previewModal">
+    <div class="modal-content">
+      <span class="close-btn" id="closePreview">&times;</span>
+      <h2>Additional Information Preview</h2>
+      <p id="previewContent"></p>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const additionalEditor = document.getElementById('additionalEditor');
+    const previewLink = document.getElementById('previewLink');
+    const previewModal = document.getElementById('previewModal');
+    const closePreview = document.getElementById('closePreview');
+    const previewContent = document.getElementById('previewContent');
+    const backBtn = document.getElementById('backBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // Format text
+    function formatText(command) {
+      document.execCommand(command, false, null);
+      additionalEditor.focus();
+    }
+
+    // Preview link
+    previewLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      const content = additionalEditor.innerHTML.trim();
+      previewContent.innerHTML = content || 'No additional information added yet.';
+      previewModal.style.display = 'flex';
+    });
+
+    // Close preview modal
+    closePreview.addEventListener('click', function() {
+      previewModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+      if (e.target === previewModal) {
+        previewModal.style.display = 'none';
+      }
+    });
+
+    // Back button
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    // Save button
+    saveBtn.addEventListener('click', function() {
+      const content = additionalEditor.innerHTML.trim();
+      localStorage.setItem('additionalInformation', content);
+      alert('Additional information saved successfully!');
+    });
+
+    // Load saved content on page load
+    window.addEventListener('load', function() {
+      const saved = localStorage.getItem('additionalInformation');
+      if (saved) {
+        additionalEditor.innerHTML = saved;
+      }
+    });
+  </script>
+  <script src="../tryM3/chatbot.js"></script>
+</body>
+</html>

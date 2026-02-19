@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Availability</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #666;
+    }
+
+    .select-all {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .select-all input {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .availability-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .availability-table th,
+    .availability-table td {
+      padding: 15px;
+      text-align: center;
+      border: 1px solid #eee;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .availability-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .availability-table td {
+      background: #f5f5f5;
+      font-weight: 500;
+    }
+
+    .availability-table td:hover {
+      background: #e9ecef;
+    }
+
+    .availability-table td.selected {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .availability-table td.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .time-label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: white;
+      border: 2px solid #ddd;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background: #f8f9fa;
+      border-color: #ccc;
+    }
+
+    .btn-save {
+      background: #0066FF;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0052cc;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      .title {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+      }
+
+      .availability-table th,
+      .availability-table td {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">When are you available to work?</h1>
+      <p class="subtitle">Select time slots on the calendar below</p>
+    </div>
+
+    <div class="select-all">
+      <input type="checkbox" id="selectAll">
+      <label for="selectAll">Select all</label>
+    </div>
+
+    <table class="availability-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+          <th>Sunday</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="time-label">Morning</td>
+          <td data-day="Monday" data-time="Morning"></td>
+          <td data-day="Tuesday" data-time="Morning"></td>
+          <td data-day="Wednesday" data-time="Morning"></td>
+          <td data-day="Thursday" data-time="Morning"></td>
+          <td data-day="Friday" data-time="Morning"></td>
+          <td data-day="Saturday" data-time="Morning"></td>
+          <td data-day="Sunday" data-time="Morning"></td>
+        </tr>
+        <tr>
+          <td class="time-label">Afternoon</td>
+          <td data-day="Monday" data-time="Afternoon"></td>
+          <td data-day="Tuesday" data-time="Afternoon"></td>
+          <td data-day="Wednesday" data-time="Afternoon"></td>
+          <td data-day="Thursday" data-time="Afternoon"></td>
+          <td data-day="Friday" data-time="Afternoon"></td>
+          <td data-day="Saturday" data-time="Afternoon"></td>
+          <td data-day="Sunday" data-time="Afternoon"></td>
+        </tr>
+        <tr>
+          <td class="time-label">Evening</td>
+          <td data-day="Monday" data-time="Evening"></td>
+          <td data-day="Tuesday" data-time="Evening"></td>
+          <td data-day="Wednesday" data-time="Evening"></td>
+          <td data-day="Thursday" data-time="Evening"></td>
+          <td data-day="Friday" data-time="Evening"></td>
+          <td data-day="Saturday" data-time="Evening"></td>
+          <td data-day="Sunday" data-time="Evening"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="buttons">
+      <button class="btn btn-back" id="backBtn">Back</button>
+      <button class="btn btn-save" id="saveBtn">Save</button>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const cells = document.querySelectorAll('.availability-table td[data-day]');
+    const backBtn = document.getElementById('backBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // Toggle cell selection
+    cells.forEach(cell => {
+      cell.addEventListener('click', function() {
+        this.classList.toggle('selected');
+        updateSelectAllCheckbox();
+      });
+    });
+
+    // Select all functionality
+    selectAllCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        cells.forEach(cell => cell.classList.add('selected'));
+      } else {
+        cells.forEach(cell => cell.classList.remove('selected'));
+      }
+    });
+
+    // Update select all checkbox state
+    function updateSelectAllCheckbox() {
+      const selectedCells = document.querySelectorAll('.availability-table td.selected');
+      selectAllCheckbox.checked = selectedCells.length === cells.length;
+      selectAllCheckbox.indeterminate = selectedCells.length > 0 && selectedCells.length < cells.length;
+    }
+
+    // Back button
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    // Save button
+    saveBtn.addEventListener('click', function() {
+      const selectedSlots = [];
+      const selectedCells = document.querySelectorAll('.availability-table td.selected');
+      selectedCells.forEach(cell => {
+        const day = cell.getAttribute('data-day');
+        const time = cell.getAttribute('data-time');
+        selectedSlots.push(`${day} ${time}`);
+      });
+
+      if (selectedSlots.length === 0) {
+        alert('Please select at least one time slot.');
+        return;
+      }
+
+      console.log('Selected availability slots:', selectedSlots);
+      alert(`Availability saved! Selected ${selectedSlots.length} time slots.`);
+    });
+  </script>
+</body>
+</html>

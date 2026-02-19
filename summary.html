@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary - SynthCV</title>
+    <link rel="stylesheet" href="../tryM3/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        /* Left Section */
+        .left-section {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .search-group {
+            margin-bottom: 20px;
+        }
+
+        .search-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .job-titles {
+            margin-bottom: 20px;
+        }
+
+        .job-titles h3 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .job-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .job-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .job-icon {
+            color: #0066FF;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .job-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .suggestions {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .suggestion-card {
+            display: flex;
+            align-items: flex-start;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .suggestion-icon {
+            width: 24px;
+            height: 24px;
+            background: #ffc107;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .suggestion-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Right Section */
+        .right-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .preview-link {
+            color: #0066FF;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .preview-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-heading {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .subtext {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .editor-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .toolbar-btn {
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .toolbar-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .toolbar-btn.active {
+            background: #0066FF;
+            color: white;
+            border-color: #0066FF;
+        }
+
+        .editor-area {
+            min-height: 200px;
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            outline: none;
+            border: none;
+        }
+
+        .editor-area::before {
+            content: attr(data-placeholder);
+            color: #999;
+            pointer-events: none;
+        }
+
+        .editor-area:empty::before {
+            display: block;
+        }
+
+        .editor-area:focus::before {
+            display: none;
+        }
+
+        /* Bottom Buttons */
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back {
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-save {
+            background: #0066FF;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #0052cc;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .left-section {
+                max-height: none;
+                order: 2;
+            }
+
+            .right-section {
+                order: 1;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <div class="search-group">
+                <label>TITLE, INDUSTRY, KEYWORD</label>
+                <input type="text" class="search-input" placeholder="Ex: Cashier">
+            </div>
+
+            <div class="job-titles">
+                <h3>Popular job titles</h3>
+                <div class="job-item" onclick="selectJob('Cashier')">
+                    <span class="job-icon">🔍</span>
+                    <span class="job-text">Cashier</span>
+                </div>
+                <div class="job-item" onclick="selectJob('Customer Service Representative')">
+                    <span class="job-icon">🔍</span>
+                    <span class="job-text">Customer Service Representative</span>
+                </div>
+                <div class="job-item" onclick="selectJob('Manager')">
+                    <span class="job-icon">🔍</span>
+                    <span class="job-text">Manager</span>
+                </div>
+                <div class="job-item" onclick="selectJob('Server')">
+                    <span class="job-icon">🔍</span>
+                    <span class="job-text">Server</span>
+                </div>
+                <div class="job-item" onclick="selectJob('Retail Sales Associate')">
+                    <span class="job-icon">🔍</span>
+                    <span class="job-text">Retail Sales Associate</span>
+                </div>
+                <div class="job-item" onclick="selectJob('')">
+                    <span class="job-icon">🔍</span>
+                    <span class="job-text">See more</span>
+                </div>
+            </div>
+
+            <div class="suggestions">
+                <div class="suggestion-card">
+                    <div class="suggestion-icon">+</div>
+                    <div class="suggestion-text">Experienced cashier with 3+ years in retail environments. Skilled in handling high-volume transactions, customer service, and inventory management.</div>
+                </div>
+                <div class="suggestion-card">
+                    <div class="suggestion-icon">+</div>
+                    <div class="suggestion-text">Detail-oriented professional with strong customer service background. Excel at problem-solving and maintaining positive customer relationships.</div>
+                </div>
+                <div class="suggestion-card">
+                    <div class="suggestion-icon">+</div>
+                    <div class="suggestion-text">Results-driven manager with proven leadership skills. Experienced in team coordination, process improvement, and achieving operational excellence.</div>
+                </div>
+                <div class="suggestion-card">
+                    <div class="suggestion-icon">+</div>
+                    <div class="suggestion-text">Hospitality professional with expertise in food service. Committed to providing exceptional dining experiences and maintaining high standards.</div>
+                </div>
+                <div class="suggestion-card">
+                    <div class="suggestion-icon">+</div>
+                    <div class="suggestion-text">Dynamic sales associate with track record of exceeding targets. Strong communication skills and ability to build lasting customer relationships.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="header-row">
+                <div></div>
+                <a href="#" class="preview-link">
+                    👁️ Preview
+                </a>
+            </div>
+
+            <h1 class="main-heading">Briefly tell us about your background</h1>
+            <p class="subtext">Use our expert recommendations below to get started.</p>
+
+            <div class="editor-container">
+                <div class="editor-toolbar">
+                    <button class="toolbar-btn" onclick="formatText('bold')" title="Bold">B</button>
+                    <button class="toolbar-btn" onclick="formatText('italic')" title="Italic">I</button>
+                    <button class="toolbar-btn" onclick="formatText('underline')" title="Underline">U</button>
+                    <button class="toolbar-btn" onclick="formatText('insertUnorderedList')" title="Bullet List">•</button>
+                    <button class="toolbar-btn" onclick="formatText('insertOrderedList')" title="Number List">1.</button>
+                    <button class="toolbar-btn" onclick="undoText()" title="Undo">↶</button>
+                    <button class="toolbar-btn" onclick="redoText()" title="Redo">↷</button>
+                </div>
+                <div class="editor-area" id="editorArea" contenteditable="true" data-placeholder="Write your summary here."></div>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+                <button type="button" class="btn btn-delete" onclick="deleteSummary()">Delete</button>
+                <button type="button" class="btn btn-save" onclick="saveSummary()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Job titles and suggestions data
+        const jobTitles = [
+            'Cashier',
+            'Customer Service Representative',
+            'Manager',
+            'Server',
+            'Retail Sales Associate'
+        ];
+
+        const suggestions = [
+            'Experienced cashier with 3+ years in retail environments. Skilled in handling high-volume transactions, customer service, and inventory management.',
+            'Detail-oriented professional with strong customer service background. Excel at problem-solving and maintaining positive customer relationships.',
+            'Results-driven manager with proven leadership skills. Experienced in team coordination, process improvement, and achieving operational excellence.',
+            'Hospitality professional with expertise in food service. Committed to providing exceptional dining experiences and maintaining high standards.',
+            'Dynamic sales associate with track record of exceeding targets. Strong communication skills and ability to build lasting customer relationships.'
+        ];
+
+        function selectJob(jobTitle) {
+            if (jobTitle) {
+                document.querySelector('.search-input').value = jobTitle;
+                filterContent(jobTitle);
+            }
+        }
+
+        function filterContent(query) {
+            const lowerQuery = query.toLowerCase();
+
+            // Filter job titles
+            const jobItems = document.querySelectorAll('.job-item');
+            jobItems.forEach((item, index) => {
+                if (index < jobTitles.length) { // Skip "See more"
+                    const jobName = jobTitles[index].toLowerCase();
+                    if (jobName.includes(lowerQuery)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+
+            // Filter suggestions
+            const suggestionCards = document.querySelectorAll('.suggestion-card');
+            suggestionCards.forEach((card, index) => {
+                const suggestionText = suggestions[index].toLowerCase();
+                if (suggestionText.includes(lowerQuery)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function addSuggestion(index) {
+            const editor = document.getElementById('editorArea');
+            const suggestionText = suggestions[index];
+
+            // If editor is empty, add the suggestion
+            if (!editor.innerHTML.trim() || editor.innerHTML.trim() === '<br>') {
+                editor.innerHTML = suggestionText;
+            } else {
+                // Append with a line break
+                editor.innerHTML += '<br><br>' + suggestionText;
+            }
+
+            // Focus the editor
+            editor.focus();
+
+            // Scroll to end
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(editor);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            document.getElementById('editorArea').focus();
+        }
+
+        function undoText() {
+            document.execCommand('undo', false, null);
+            document.getElementById('editorArea').focus();
+        }
+
+        function redoText() {
+            document.execCommand('redo', false, null);
+            document.getElementById('editorArea').focus();
+        }
+
+        function togglePreview() {
+            // For now, just show an alert. In a real implementation, this would open a preview modal
+            const content = document.getElementById('editorArea').innerHTML.trim();
+            if (!content || content === '<br>') {
+                alert('No content to preview. Please write a summary first.');
+                return;
+            }
+
+            // Create a simple preview modal
+            const previewModal = document.createElement('div');
+            previewModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+
+            const previewContent = document.createElement('div');
+            previewContent.style.cssText = `
+                background: white;
+                padding: 24px;
+                border-radius: 12px;
+                max-width: 600px;
+                max-height: 80vh;
+                overflow-y: auto;
+                position: relative;
+            `;
+
+            previewContent.innerHTML = `
+                <h2 style="margin-top: 0; color: #333;">Summary Preview</h2>
+                <div style="margin: 20px 0; padding: 16px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9fa;">
+                    ${content}
+                </div>
+                <button onclick="this.closest('div').parentElement.remove()" style="padding: 8px 16px; background: #0066FF; color: white; border: none; border-radius: 6px; cursor: pointer;">Close</button>
+            `;
+
+            previewModal.appendChild(previewContent);
+            document.body.appendChild(previewModal);
+        }
+
+        function saveSummary() {
+            const summaryText = document.getElementById('editorArea').innerHTML.trim();
+            if (!summaryText || summaryText === '<br>') {
+                alert('Please write a summary before saving.');
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('summaryData', summaryText);
+            alert('Summary saved successfully!');
+            console.log('Saved summary:', summaryText);
+        }
+
+        function deleteSummary() {
+            if (confirm('Are you sure you want to delete your summary?')) {
+                localStorage.removeItem('summaryData');
+                // Clear the editor
+                document.getElementById('editorArea').innerHTML = '';
+                alert('Summary deleted successfully!');
+            }
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../tryM3/profile.html';
+            }
+        }
+
+        // Load saved summary on page load
+        window.addEventListener('load', function() {
+            const savedSummary = localStorage.getItem('summaryData');
+            if (savedSummary) {
+                document.getElementById('editorArea').innerHTML = savedSummary;
+            }
+
+            // Add click handlers to suggestion cards
+            const suggestionCards = document.querySelectorAll('.suggestion-card');
+            suggestionCards.forEach((card, index) => {
+                card.addEventListener('click', () => addSuggestion(index));
+                card.style.cursor = 'pointer';
+            });
+
+            // Add search functionality
+            const searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('input', function() {
+                filterContent(this.value);
+            });
+
+            // Add preview link functionality
+            const previewLink = document.querySelector('.preview-link');
+            previewLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                togglePreview();
+            });
+        });
+    </script>
+</body>
+</html>

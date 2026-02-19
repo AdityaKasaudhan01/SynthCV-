@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Our Team </title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the 3D flip card effect and animations */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* The container for the flip card - needs perspective */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 350px; /* Fixed height for consistent card size */
+            perspective: 1000px; /* Gives the 3D effect */
+        }
+
+        /* This container is needed to position the front and back side */
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+            border-radius: 0.75rem; /* 12px */
+        }
+
+        /* Do a horizontal flip when you move the mouse over the flip box container */
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Position the front and back side */
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+            border-radius: 0.75rem; /* 12px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Style the front side */
+        .flip-card-front {
+            background-color: #FFFFFF; /* bg-white */
+            color: #1F2937; /* text-gray-800 */
+            padding: 1rem;
+            border: 1px solid #E5E7EB; /* border-gray-200 */
+        }
+
+        /* Style the back side */
+        .flip-card-back {
+            background-color: #F9FAFB; /* bg-gray-50 */
+            color: #1F2937; /* text-gray-800 */
+            transform: rotateY(180deg);
+            padding: 1rem;
+            border: 1px solid #E5E7EB; /* border-gray-200 */
+        }
+
+        /* Simple fade-in animation for page load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        .fade-in-delay-1 { animation-delay: 0.2s; opacity: 0; }
+        .fade-in-delay-2 { animation-delay: 0.4s; opacity: 0; }
+        .fade-in-delay-3 { animation-delay: 0.6s; opacity: 0; }
+        .fade-in-delay-4 { animation-delay: 0.8s; opacity: 0; }
+        .fade-in-delay-5 { animation-delay: 1.0s; opacity: 0; }
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto px-6 py-16 md:py-24">
+        
+        <!-- Header Section -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight fade-in">About Our Project</h1>
+            <div class="w-24 h-1 bg-indigo-500 mx-auto mb-6 fade-in fade-in-delay-1"></div>
+            <p class="text-lg md:text-xl text-gray-600 leading-relaxed fade-in fade-in-delay-2">
+                SynthCV is a smart and free resume maker website that helps users create professional resumes easily. 
+                It not only designs attractive,ATS-friendly resumes but also builds an online profile where employers can visit and hire you directly. 
+                SynthCV uses AI to automatically update your resume according to job descriptions, ensuring it always matches the position you apply for. 
+                The platform is linked with LinkedIn, allowing you to import your details instantly and keep your resume up to date. 
+                Users can track profile visits, get AI-based suggestions, and create multiple resumes for different roles. SynthCV is more than just a resume builder — it’s a complete career assistant that connects job seekers with recruiters, saves time, and helps you stand out in the competitive job market.
+            </p>
+        </div>
+
+        <!-- Team Section -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 fade-in fade-in-delay-3">Meet The Innovators</h2>
+            <p class="text-gray-600 max-w-xl mx-auto fade-in fade-in-delay-4">The minds behind the magic. Hover over our cards to learn more about us.</p>
+        </div>
+
+        <!-- Team Member Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 fade-in fade-in-delay-5">
+
+            <!-- === TEAM MEMBER 1 === -->
+            <!-- Instructions: 
+                1. Change the image src in .flip-card-front to your team member's picture URL.
+                2. Update the Name and Role in .flip-card-front.
+                3. Update the Name, Bio, and social media links (href) in .flip-card-back.
+            -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img class="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 mb-4" 
+                             src="../image/aditya.jpg" 
+                             alt="Team Member 1 Picture"
+                             onerror="this.onerror=null;this.src='https://placehold.co/200x200/4F46E5/FFFFFF?text=Error';">
+                        <h3 class="text-xl font-bold">Aditya Raj Gupta</h3>
+                        <p class="text-indigo-600">Project Lead & Backend</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <h3 class="text-xl font-bold mb-2">Aditya</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            The strategic mind orchestrating the project's architecture and backend logic. Coffee-fueled and code-obsessed.
+                        </p>
+                        <!-- Social Links -->
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.013c0 4.418 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.013C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg>
+                            </a>
+                            <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === TEAM MEMBER 2 === -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img class="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 mb-4" 
+                             src="../image/MILI.jpg" 
+                             alt="Team Member 2 Picture"
+                             onerror="this.onerror=null;this.src='https://placehold.co/200x200/4F46E5/FFFFFF?text=Error';">
+                        <h3 class="text-xl font-bold">Mili Srivastava</h3>
+                        <p class="text-indigo-600">Frontend Developer</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <h3 class="text-xl font-bold mb-2">Mili</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            The artist painting with code. Transforms complex ideas into intuitive, beautiful, and responsive user interfaces.
+                        </p>
+                        <!-- Social Links -->
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.013c0 4.418 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.013C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg>
+                            </a>
+                            <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === TEAM MEMBER 3 === -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img class="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 mb-4" 
+                             src="../image/ANSHU.jpg" 
+                             alt="Team Member 3 Picture"
+                             onerror="this.onerror=null;this.src='https://placehold.co/200x200/4F46E5/FFFFFF?text=Error';">
+                        <h3 class="text-xl font-bold">Anshu Gupta</h3>
+                        <p class="text-indigo-600">UI/UX Designer</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <h3 class="text-xl font-bold mb-2">Anshu</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            The visionary shaping the user experience. Focuses on user flows and aesthetic details to make the platform a joy to use.
+                        </p>
+                        <!-- Social Links -->
+                        <div class="flex justify-center space-x-4">
+                           <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.013c0 4.418 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.013C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg>
+                            </a>
+                            <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- === TEAM MEMBER 4 === -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img class="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 mb-4" 
+                             src="../image/avinash.jpg" 
+                             alt="Team Member 4 Picture"
+                             onerror="this.onerror=null;this.src='https://placehold.co/200x200/4F46E5/FFFFFF?text=Error';">
+                        <h3 class="text-xl font-bold">Avinash Upadhayay</h3>
+                        <p class="text-indigo-600">Database </p>
+                    </div>
+                    <div class="flip-card-back">
+                        <h3 class="text-xl font-bold mb-2">Avinash</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            The backbone of our data and deployment. Ensures everything is secure, scalable, and running smoothly 24/7.
+                        </p>
+                        <!-- Social Links -->
+                        <div class="flex justify-center space-x-4">
+                           <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.013c0 4.418 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.013C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg>
+                            </a>
+                            <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

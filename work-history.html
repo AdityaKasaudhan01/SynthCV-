@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work History Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .preview-link {
+      color: #0066FF;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #0066FF;
+      box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      grid-column: span 2;
+    }
+
+    .checkbox-group input {
+      margin-right: 10px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: 1px solid #ddd;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-back:hover {
+      background: #f0f0f0;
+    }
+
+    .btn-save {
+      background: #0066FF;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0052cc;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      border: 1px solid #dc3545;
+    }
+
+    .btn-delete:hover {
+      background: #c82333;
+      border-color: #c82333;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .title {
+        font-size: 24px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+
+      .checkbox-group {
+        grid-column: span 1;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1 class="title">Tell us about another job</h1>
+        <p class="subtitle">We’ll put your work history in the right order.</p>
+      </div>
+      <a href="#" class="preview-link">Preview</a>
+    </div>
+
+    <form id="workHistoryForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="jobTitle">Job Title</label>
+          <input type="text" id="jobTitle" class="form-control" placeholder="e.g. Customer Service Representative">
+        </div>
+
+        <div class="form-group">
+          <label for="employer">Employer</label>
+          <input type="text" id="employer" class="form-control" placeholder="e.g. ACME Technologies">
+        </div>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" class="form-control" placeholder="e.g. San Francisco">
+        </div>
+
+        <div class="form-group">
+          <label for="state">State</label>
+          <input type="text" id="state" class="form-control" placeholder="e.g. CA">
+        </div>
+
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="month" id="startDate" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input type="month" id="endDate" class="form-control">
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="currentlyWork">
+          <label for="currentlyWork">I currently work here</label>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="btn btn-back" id="backBtn">← Back</button>
+        <button type="button" class="btn btn-delete" onclick="deleteWorkHistory()">Delete</button>
+        <button type="button" class="btn btn-save" id="saveBtn">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const currentlyWorkCheckbox = document.getElementById('currentlyWork');
+    const endDateInput = document.getElementById('endDate');
+    const saveBtn = document.getElementById('saveBtn');
+    const backBtn = document.getElementById('backBtn');
+
+    // Disable end date when checkbox is checked
+    currentlyWorkCheckbox.addEventListener('change', function() {
+      endDateInput.disabled = this.checked;
+      if (this.checked) {
+        endDateInput.value = '';
+      }
+    });
+
+    // Save button logic
+    saveBtn.addEventListener('click', function() {
+      const jobTitle = document.getElementById('jobTitle').value.trim();
+      const employer = document.getElementById('employer').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const state = document.getElementById('state').value.trim();
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      const currentlyWork = document.getElementById('currentlyWork').checked;
+
+      // Basic validation
+      if (!jobTitle || !employer || !city || !state || !startDate) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      if (!currentlyWork && !endDate) {
+        alert('Please provide an end date or check "I currently work here".');
+        return;
+      }
+
+      const data = {
+        jobTitle,
+        employer,
+        city,
+        state,
+        startDate,
+        endDate: currentlyWork ? null : endDate,
+        currentlyWork
+      };
+
+      console.log(data);
+      localStorage.setItem('workHistoryData', JSON.stringify(data));
+      alert('Work history data saved successfully!');
+    });
+
+    // Delete button logic
+    function deleteWorkHistory() {
+      if (confirm('Are you sure you want to delete your work history information?')) {
+        localStorage.removeItem('workHistoryData');
+        // Reset form fields
+        document.getElementById('jobTitle').value = '';
+        document.getElementById('employer').value = '';
+        document.getElementById('city').value = '';
+        document.getElementById('state').value = '';
+        document.getElementById('startDate').value = '';
+        document.getElementById('endDate').value = '';
+        document.getElementById('currentlyWork').checked = false;
+        alert('Work history information deleted successfully!');
+      }
+    }
+
+    // Back button logic
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+  </script>
+</body>
+</html>

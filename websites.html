@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Websites, Portfolio, Social Media</title>
+  <link rel="stylesheet" href="../tryM3/chatbot.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #090909;
+    }
+
+    .preview-link {
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .preview-link:hover {
+      text-decoration: underline;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .link-section {
+      margin-bottom: 20px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .input-group {
+      flex: 1;
+    }
+
+    .input-label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .website-select, .url-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .website-select:focus, .url-input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #dc3545;
+      padding: 5px;
+      transition: opacity 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      opacity: 0.7;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    .add-link {
+      color: #007bff;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 14px;
+      margin-bottom: 30px;
+      display: inline-block;
+    }
+
+    .add-link:hover {
+      opacity: 0.8;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn-back {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-save {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 70%;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .link-list {
+      list-style: none;
+    }
+
+    .link-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .link-item:last-child {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .link-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">Websites, Portfolio, Social Media</h1>
+      <a class="preview-link" id="previewLink">Preview</a>
+    </div>
+
+    <p class="subtitle">You can add up to 6 website, portfolio or social media links.</p>
+
+    <div id="linksContainer">
+      <div class="link-section">
+        <div class="link-row">
+          <div class="input-group">
+            <label class="input-label">WEBSITE</label>
+            <select class="website-select">
+              <option value="Github" selected>Github</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Twitter">Twitter</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Behance">Behance</option>
+              <option value="Dribbble">Dribbble</option>
+              <option value="Personal Website">Personal Website</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">LINK/URL</label>
+            <input type="url" class="url-input" placeholder="https://www.github.com/username">
+          </div>
+          <button class="delete-btn" onclick="deleteLink(this)">🗑️</button>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="header1">
+          <label for="header1">Add to header</label>
+        </div>
+      </div>
+    </div>
+
+    <a class="add-link" id="addLink">+ Add another link</a>
+
+    <div class="buttons">
+      <button class="btn btn-back" id="backBtn">Back</button>
+      <button class="btn btn-save" id="saveBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal" id="previewModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Websites Preview</h2>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <ul class="link-list" id="linkList"></ul>
+    </div>
+  </div>
+
+  <script>
+    let linkCount = 1;
+
+    // Load saved links on page load
+    window.addEventListener('load', function() {
+      const saved = localStorage.getItem('websites');
+      if (saved) {
+        const websites = JSON.parse(saved);
+        websites.forEach((website, index) => {
+          if (index === 0) {
+            document.querySelector('.website-select').value = website.type;
+            document.querySelector('.url-input').value = website.url;
+            document.getElementById('header1').checked = website.addToHeader;
+          } else {
+            addLinkSection(website);
+          }
+        });
+      }
+    });
+
+    // Add another link
+    document.getElementById('addLink').addEventListener('click', function() {
+      if (linkCount < 6) {
+        addLinkSection();
+      } else {
+        alert('You can add up to 6 links.');
+      }
+    });
+
+    function addLinkSection(website = {}) {
+      linkCount++;
+      const linksContainer = document.getElementById('linksContainer');
+      const linkSection = document.createElement('div');
+      linkSection.className = 'link-section';
+      linkSection.innerHTML = `
+        <div class="link-row">
+          <div class="input-group">
+            <label class="input-label">WEBSITE</label>
+            <select class="website-select">
+              <option value="Github" ${website.type === 'Github' ? 'selected' : ''}>Github</option>
+              <option value="LinkedIn" ${website.type === 'LinkedIn' ? 'selected' : ''}>LinkedIn</option>
+              <option value="Twitter" ${website.type === 'Twitter' ? 'selected' : ''}>Twitter</option>
+              <option value="Instagram" ${website.type === 'Instagram' ? 'selected' : ''}>Instagram</option>
+              <option value="Behance" ${website.type === 'Behance' ? 'selected' : ''}>Behance</option>
+              <option value="Dribbble" ${website.type === 'Dribbble' ? 'selected' : ''}>Dribbble</option>
+              <option value="Personal Website" ${website.type === 'Personal Website' ? 'selected' : ''}>Personal Website</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">LINK/URL</label>
+            <input type="url" class="url-input" placeholder="https://www.github.com/username" value="${website.url || ''}">
+          </div>
+          <button class="delete-btn" onclick="deleteLink(this)">🗑️</button>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="header${linkCount}" ${website.addToHeader ? 'checked' : ''}>
+          <label for="header${linkCount}">Add to header</label>
+        </div>
+      `;
+      linksContainer.appendChild(linkSection);
+    }
+
+    // Delete link
+    function deleteLink(button) {
+      const sections = document.querySelectorAll('.link-section');
+      if (sections.length > 1) {
+        button.closest('.link-section').remove();
+        linkCount--;
+      } else {
+        alert('At least one link must remain.');
+      }
+    }
+
+    // Preview
+    document.getElementById('previewLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      const linkList = document.getElementById('linkList');
+      linkList.innerHTML = '';
+      const sections = document.querySelectorAll('.link-section');
+      sections.forEach(section => {
+        const type = section.querySelector('.website-select').value;
+        const url = section.querySelector('.url-input').value.trim();
+        if (url) {
+          const li = document.createElement('li');
+          li.className = 'link-item';
+          li.innerHTML = `<strong>${type}:</strong> <a href="${url}" target="_blank">${url}</a>`;
+          linkList.appendChild(li);
+        }
+      });
+      document.getElementById('previewModal').style.display = 'flex';
+    });
+
+    // Close modal
+    document.getElementById('closeModal').addEventListener('click', function() {
+      document.getElementById('previewModal').style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+      if (e.target === document.getElementById('previewModal')) {
+        document.getElementById('previewModal').style.display = 'none';
+      }
+    });
+
+    // Back button
+    document.getElementById('backBtn').addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    // Save button
+    document.getElementById('saveBtn').addEventListener('click', function() {
+      const sections = document.querySelectorAll('.link-section');
+      const websites = [];
+      sections.forEach((section, index) => {
+        const type = section.querySelector('.website-select').value;
+        const url = section.querySelector('.url-input').value.trim();
+        const addToHeader = section.querySelector(`#header${index + 1}`).checked;
+        if (url) {
+          websites.push({ type, url, addToHeader });
+        }
+      });
+
+      if (websites.length === 0) {
+        alert('Please add at least one link before saving.');
+        return;
+      }
+
+      localStorage.setItem('websites', JSON.stringify(websites));
+      alert('Websites saved successfully!');
+    });
+  </script>
+  <script src="../tryM3/chatbot.js"></script>
+</body>
+</html>

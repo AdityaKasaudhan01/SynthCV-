@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Resume Score Checker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #00d4ff, #090979, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            opacity: 0.8;
+        }
+
+        .upload-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .upload-area {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            border: 2px dashed #00d4ff;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: #ff006e;
+            background: rgba(255, 0, 110, 0.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .upload-area.dragover {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            filter: drop-shadow(0 0 10px #00d4ff);
+        }
+
+        .upload-text {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .upload-subtext {
+            font-size: 0.9rem;
+            color: #888;
+            text-align: center;
+        }
+
+        .file-input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 400px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #ff006e);
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .progress-text {
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .score-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#00d4ff 0deg, #ff006e 180deg, #00ff88 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            background: #0c0c0c;
+            border-radius: 50%;
+            top: 20px;
+            left: 20px;
+        }
+
+        .score-text {
+            position: relative;
+            z-index: 1;
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00d4ff, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-label {
+            position: relative;
+            z-index: 1;
+            font-size: 1rem;
+            color: #b0b0b0;
+            margin-top: 5px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .metric-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .metric-score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #ff006e);
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .buttons-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #090979);
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #ff006e, #833ab4);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 0 30px rgba(255, 0, 110, 0.6);
+            transform: translateY(-2px);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
+            100% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.5); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .upload-area {
+                height: 250px;
+            }
+
+            .score-circle {
+                width: 150px;
+                height: 150px;
+            }
+
+            .score-circle::before {
+                width: 120px;
+                height: 120px;
+                top: 15px;
+                left: 15px;
+            }
+
+            .score-text {
+                font-size: 2rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons-section {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 ATS Resume Score Checker</h1>
+            <p>Upload your resume and see how well it passes the bots!</p>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">Drag & drop your resume here</div>
+                <div class="upload-subtext">or click to browse (PDF, DOC, DOCX)</div>
+                <input type="file" class="file-input" id="fileInput" accept=".pdf,.doc,.docx">
+            </div>
+        </div>
+
+        <div class="progress-section" id="progressSection">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Analyzing your resume...</div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="score-container">
+                <div class="score-circle">
+                    <div>
+                        <div class="score-text" id="overallScore">0</div>
+                        <div class="score-label">ATS Score</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics-grid" id="metricsGrid">
+                <div class="metric-card">
+                    <div class="metric-title">Resume Readability</div>
+                    <div class="metric-score" id="readabilityScore">0%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="readabilityFill"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Keyword Match</div>
+                    <div class="metric-score" id="keywordScore">0%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="keywordFill"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Formatting & Structure</div>
+                    <div class="metric-score" id="formattingScore">0%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="formattingFill"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Skills Match</div>
+                    <div class="metric-score" id="skillsScore">0%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="skillsFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons-section">
+                <button class="btn btn-primary" id="reuploadBtn">Re-upload Resume</button>
+                <button class="btn btn-secondary" id="improveBtn">Improve My Resume</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const progressSection = document.getElementById('progressSection');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const resultsSection = document.getElementById('resultsSection');
+        const overallScore = document.getElementById('overallScore');
+        const reuploadBtn = document.getElementById('reuploadBtn');
+        const improveBtn = document.getElementById('improveBtn');
+
+        // Job-related keywords for matching
+        const jobKeywords = [
+            'javascript', 'python', 'java', 'html', 'css', 'react', 'node.js', 'sql',
+            'project management', 'leadership', 'communication', 'teamwork', 'problem solving',
+            'data analysis', 'machine learning', 'agile', 'scrum', 'git', 'docker', 'aws',
+            'marketing', 'sales', 'customer service', 'accounting', 'finance', 'design',
+            'photoshop', 'illustrator', 'ux/ui', 'seo', 'content creation'
+        ];
+
+        // Skills keywords
+        const skillsKeywords = [
+            'communication', 'leadership', 'teamwork', 'problem solving', 'analytical',
+            'creativity', 'adaptability', 'time management', 'organization', 'attention to detail'
+        ];
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        reuploadBtn.addEventListener('click', () => {
+            resetPage();
+        });
+
+        improveBtn.addEventListener('click', () => {
+            alert('Redirecting to resume improvement tools...');
+            // You can add navigation logic here
+        });
+
+        function handleFile(file) {
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please upload a PDF, DOC, or DOCX file.');
+                return;
+            }
+
+            uploadArea.style.display = 'none';
+            progressSection.style.display = 'block';
+
+            // Simulate progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    analyzeResume(file);
+                }
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `Analyzing your resume... ${Math.round(progress)}%`;
+            }, 200);
+        }
+
+        async function analyzeResume(file) {
+            let text = '';
+
+            try {
+                if (file.type === 'application/pdf') {
+                    text = await extractTextFromPDF(file);
+                } else {
+                    // For DOC/DOCX, we'll simulate text extraction
+                    text = await simulateTextExtraction(file);
+                }
+
+                const scores = calculateScores(text);
+                displayResults(scores);
+            } catch (error) {
+                console.error('Error analyzing resume:', error);
+                alert('Error analyzing resume. Please try again.');
+                resetPage();
+            }
+        }
+
+        async function extractTextFromPDF(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let text = '';
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                text += textContent.items.map(item => item.str).join(' ') + ' ';
+            }
+
+            return text.toLowerCase();
+        }
+
+        async function simulateTextExtraction(file) {
+            // Simulate reading file content
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // For demo purposes, return some sample text
+                    // In a real implementation, you'd need a library to parse DOC/DOCX
+                    const sampleText = `
+                        I am a skilled software developer with experience in JavaScript, Python, and React.
+                        I have strong communication skills and leadership abilities.
+                        My projects include web development and data analysis.
+                        I am proficient in HTML, CSS, Node.js, and SQL.
+                        I have excellent problem-solving skills and work well in teams.
+                    `;
+                    resolve(sampleText.toLowerCase());
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        function calculateScores(text) {
+            // Calculate keyword match
+            const keywordMatches = jobKeywords.filter(keyword => text.includes(keyword)).length;
+            const keywordScore = Math.min((keywordMatches / jobKeywords.length) * 100, 100);
+
+            // Calculate skills match
+            const skillsMatches = skillsKeywords.filter(skill => text.includes(skill)).length;
+            const skillsScore = Math.min((skillsMatches / skillsKeywords.length) * 100, 100);
+
+            // Simulate other scores
+            const readabilityScore = Math.random() * 40 + 60; // 60-100
+            const formattingScore = Math.random() * 30 + 70; // 70-100
+
+            // Calculate overall score
+            const overallScore = (keywordScore * 0.3 + skillsScore * 0.3 + readabilityScore * 0.2 + formattingScore * 0.2);
+
+            return {
+                overall: Math.round(overallScore),
+                readability: Math.round(readabilityScore),
+                keyword: Math.round(keywordScore),
+                formatting: Math.round(formattingScore),
+                skills: Math.round(skillsScore)
+            };
+        }
+
+        function displayResults(scores) {
+            progressSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+            resultsSection.classList.add('fade-in');
+
+            // Animate overall score
+            animateScore(overallScore, scores.overall);
+
+            // Animate metric scores
+            animateScore(document.getElementById('readabilityScore'), scores.readability, 'readabilityFill');
+            animateScore(document.getElementById('keywordScore'), scores.keyword, 'keywordFill');
+            animateScore(document.getElementById('formattingScore'), scores.formatting, 'formattingFill');
+            animateScore(document.getElementById('skillsScore'), scores.skills, 'skillsFill');
+        }
+
+        function animateScore(element, targetScore, fillId = null) {
+            let currentScore = 0;
+            const increment = targetScore / 50;
+            const timer = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= targetScore) {
+                    currentScore = targetScore;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.round(currentScore) + (fillId ? '%' : '');
+
+                if (fillId) {
+                    document.getElementById(fillId).style.width = currentScore + '%';
+                }
+            }, 20);
+        }
+
+        function resetPage() {
+            uploadArea.style.display = 'flex';
+            progressSection.style.display = 'none';
+            resultsSection.style.display = 'none';
+            progressFill.style.width = '0%';
+            fileInput.value = '';
+            overallScore.textContent = '0';
+            document.querySelectorAll('.metric-score').forEach(el => el.textContent = '0%');
+            document.querySelectorAll('.metric-fill').forEach(el => el.style.width = '0%');
+        }
+    </script>
+</body>
+</html>

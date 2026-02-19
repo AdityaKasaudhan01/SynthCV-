@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Languages</title>
+  <link rel="stylesheet" href="../tryM3/chatbot.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 2.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .right-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .right-header {
+      margin-bottom: 20px;
+    }
+
+    .right-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .right-subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .language-section {
+      margin-bottom: 20px;
+    }
+
+    .language-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .language-group.deleteable {
+      position: relative;
+    }
+
+    .delete-btn {
+      position: absolute;
+      right: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #dc3545;
+    }
+
+    .language-group label {
+      font-weight: bold;
+      min-width: 120px;
+    }
+
+    .language-group select {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .add-another {
+      background: #0066FF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .add-another:hover {
+      background: #0052cc;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: white;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background: #f0f0f0;
+    }
+
+    .btn-save {
+      background: #0066FF;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0052cc;
+    }
+
+    .preview-text {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #0066FF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .right-title {
+        font-size: 20px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .language-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+      }
+
+      .language-group label {
+        min-width: auto;
+      }
+
+      .delete-btn {
+        position: static;
+        transform: none;
+        align-self: flex-end;
+        margin-top: -10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-text">Preview</div>
+  <div class="container">
+    <div class="right-section">
+      <div class="right-header">
+        <div class="right-title">Languages</div>
+        <div class="right-subtitle">Add your native language and any foreign languages that you know.</div>
+      </div>
+
+      <div class="language-section" id="languageSection">
+        <div class="language-group">
+          <label>Native Language</label>
+          <select id="nativeLanguage">
+            <option value="">Select Native Language</option>
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Spanish">Spanish</option>
+            <option value="French">French</option>
+            <option value="German">German</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="Russian">Russian</option>
+            <option value="Italian">Italian</option>
+            <option value="Korean">Korean</option>
+            <option value="Dutch">Dutch</option>
+            <option value="Swedish">Swedish</option>
+            <option value="Turkish">Turkish</option>
+            <option value="Polish">Polish</option>
+          </select>
+          <select id="nativeProficiency">
+            <option value="Native">Native</option>
+          </select>
+        </div>
+
+        <div class="language-group">
+          <label>Language</label>
+          <select id="language1">
+            <option value="">Select Language</option>
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Spanish">Spanish</option>
+            <option value="French">French</option>
+            <option value="German">German</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="Russian">Russian</option>
+            <option value="Italian">Italian</option>
+            <option value="Korean">Korean</option>
+            <option value="Dutch">Dutch</option>
+            <option value="Swedish">Swedish</option>
+            <option value="Turkish">Turkish</option>
+            <option value="Polish">Polish</option>
+          </select>
+          <select id="proficiency1">
+            <option value="">Select Proficiency</option>
+            <option value="Native">Native</option>
+            <option value="Fluent (C1)">Fluent (C1)</option>
+            <option value="Intermediate (B1)">Intermediate (B1)</option>
+            <option value="Beginner (A1)">Beginner (A1)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="add-another" id="addAnother">+ Add Another</button>
+
+      <div class="buttons">
+        <button type="button" class="btn btn-back" id="backBtn">Back</button>
+        <button type="button" class="btn btn-save" id="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let languageCount = 1;
+
+    document.getElementById('addAnother').addEventListener('click', function() {
+      languageCount++;
+      const languageSection = document.getElementById('languageSection');
+      const newGroup = document.createElement('div');
+      newGroup.className = 'language-group deleteable';
+      newGroup.innerHTML = `
+        <label>Language</label>
+        <select id="language${languageCount}">
+          <option value="">Select Language</option>
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Spanish">Spanish</option>
+          <option value="French">French</option>
+          <option value="German">German</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Arabic">Arabic</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Russian">Russian</option>
+          <option value="Italian">Italian</option>
+          <option value="Korean">Korean</option>
+          <option value="Dutch">Dutch</option>
+          <option value="Swedish">Swedish</option>
+          <option value="Turkish">Turkish</option>
+          <option value="Polish">Polish</option>
+        </select>
+        <select id="proficiency${languageCount}">
+          <option value="">Select Proficiency</option>
+          <option value="Native">Native</option>
+          <option value="Fluent (C1)">Fluent (C1)</option>
+          <option value="Intermediate (B1)">Intermediate (B1)</option>
+          <option value="Beginner (A1)">Beginner (A1)</option>
+        </select>
+        <button class="delete-btn" onclick="deleteLanguage(this)">🗑️</button>
+      `;
+      languageSection.appendChild(newGroup);
+    });
+
+    function deleteLanguage(btn) {
+      btn.parentElement.remove();
+    }
+
+    document.getElementById('backBtn').addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', function() {
+      // Collect data
+      const languages = [];
+      const nativeLang = document.getElementById('nativeLanguage').value;
+      const nativeProf = document.getElementById('nativeProficiency').value;
+      if (nativeLang) {
+        languages.push({ language: nativeLang, proficiency: nativeProf });
+      }
+
+      for (let i = 1; i <= languageCount; i++) {
+        const langSelect = document.getElementById(`language${i}`);
+        const profSelect = document.getElementById(`proficiency${i}`);
+        if (langSelect && profSelect && langSelect.value && profSelect.value) {
+          languages.push({ language: langSelect.value, proficiency: profSelect.value });
+        }
+      }
+
+      if (languages.length === 0) {
+        alert('Please add at least one language.');
+        return;
+      }
+
+      localStorage.setItem('languages', JSON.stringify(languages));
+      alert('Languages saved successfully!');
+    });
+
+    // Load saved data
+    window.addEventListener('load', function() {
+      const saved = localStorage.getItem('languages');
+      if (saved) {
+        const languages = JSON.parse(saved);
+        if (languages.length > 0) {
+          document.getElementById('nativeLanguage').value = languages[0].language;
+          document.getElementById('nativeProficiency').value = languages[0].proficiency;
+        }
+        for (let i = 1; i < languages.length; i++) {
+          document.getElementById('addAnother').click();
+          document.getElementById(`language${i}`).value = languages[i].language;
+          document.getElementById(`proficiency${i}`).value = languages[i].proficiency;
+        }
+      }
+    });
+  </script>
+  <script src="../tryM3/chatbot.js"></script>
+</body>
+</html>

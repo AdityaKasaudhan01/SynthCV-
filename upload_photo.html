@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Picture Uploader</title>
+    <link rel="stylesheet" href="../tryM3/chatbot.css">
+    <style>
+ :root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --light-gray: #f8f9fa;
+    --dark-gray: #343a40;
+    --border-color: #dee2e6;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-gray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: var(--dark-gray);
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.profile-pic-container {
+    margin-bottom: 25px;
+}
+
+.img-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 4px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+#imagePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn.primary:hover {
+    background-color: #0056b3;
+}
+
+.btn.success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn.danger {
+    background-color: var(--danger-color);
+    color: white;
+}  
+</style> 
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Update Profile Picture</h1>
+        
+        <div class="profile-pic-container">
+            <div class="img-container">
+                <img id="imagePreview" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiByeD0iNzUiIGZpbGw9IiNFRkVGRUYiLz4KPHBhdGggZD0iTTc1IDg3LjVDODQuOTcxMSA4Ny41IDkzLjc1IDc5LjQ3MTEgOTMuNzUgNzAuMzEyNUM5My43NSA2MS4xNTM5IDg0Ljk3MTEgNTMuMTI1IDc1IDUzLjEyNUM2NS4wMjg5IDUzLjEyNSA1Ni4yNSA2MS4xNTM5IDU2LjI1IDcwLjMxMjVDNTYuMjUgNzkuNDcxMSA2NS4wMjg5IDg3LjUgNzUgODcuNVoiIGZpbGw9IiNDNkM2QzYiLz4KPHBhdGggZD0iTTMxLjI1IDExOC43NUMzMS4yNSAxMDEuOTA2IDQ0LjYwNjMgODcuNSA2MS4wOTM4IDg3LjVIODguOTA2M0M5Ny4wMzU3IDg3LjUgMTA1Ljg0NyA5MC40MTYyIDExMS45NTcgOTUuNTQxNUMxMTguMDY3IDEwMC42NjcgMTEyLjUgMTA3LjgxMiAxMTIuNSAxMTguNzVIMzEuMjVaIiBmaWxsPSIjQzZDNkM2IiLz4KPC9zdmc+Cg==">
+            </div>
+        </div>
+
+        <input type="file" id="galleryInput" accept="image/*" style="display: none;">
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+
+        <div class="buttons">
+            <button id="galleryBtn" class="btn primary">Upload from Gallery</button>
+            <button id="cameraBtn" class="btn primary">Take Photo 📸</button>
+        </div>
+        <div class="actions">
+            <button id="saveBtn" class="btn success">Save</button>
+            <button id="removeBtn" class="btn danger">Remove</button>
+            
+        </div>
+        <div class="buttons">
+        <button type="button" class="btn btn-back" id="backBtn">← Back</button>
+    
+      </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const imagePreview = document.getElementById('imagePreview');
+    const galleryInput = document.getElementById('galleryInput');
+    const cameraInput = document.getElementById('cameraInput');
+    const galleryBtn = document.getElementById('galleryBtn');
+    const cameraBtn = document.getElementById('cameraBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const removeBtn = document.getElementById('removeBtn');
+
+    // Store the default placeholder image source
+    const placeholderSrc = imagePreview.src;
+    let currentFile = null;
+
+    // --- Event Listeners ---
+
+    // Trigger gallery file input
+    galleryBtn.addEventListener('click', () => galleryInput.click());
+
+    // Trigger camera file input
+    cameraBtn.addEventListener('click', () => cameraInput.click());
+
+    // Handle image selection from gallery
+    galleryInput.addEventListener('change', handleFileSelect);
+
+    // Handle image capture from camera
+    cameraInput.addEventListener('change', handleFileSelect);
+
+    // Save button functionality
+    saveBtn.addEventListener('click', () => {
+        if (currentFile) {
+            const imageData = imagePreview.src;
+            localStorage.setItem('profileImage', imageData);
+            console.log('Saving image file:', currentFile);
+            alert(`Image "${currentFile.name}" saved!`);
+        } else {
+            alert('Please select an image first.');
+        }
+    });
+
+    // Remove button functionality
+    removeBtn.addEventListener('click', () => {
+        imagePreview.src = placeholderSrc;
+        currentFile = null;
+        // Reset file input values
+        galleryInput.value = '';
+        cameraInput.value = '';
+        console.log('Image removed.');
+    });
+
+    // --- Helper Functions ---
+
+    /**
+     * Handles file selection from either gallery or camera input
+     * @param {Event} event - The change event from the file input
+     */
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Check if the file is an image
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file.');
+            return;
+        }
+        
+        currentFile = file;''
+
+        // Use FileReader to preview the image
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+// Back button logic
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+  </script>
+  <script src="../tryM3/chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Preference</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .radio-option input {
+      margin-right: 8px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #007bff;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label {
+      margin-left: 10px;
+      font-weight: 500;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .option-btn {
+      padding: 10px 15px;
+      border: 2px solid #ddd;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .option-btn:hover {
+      border-color: #007bff;
+    }
+
+    .option-btn.selected {
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-btn {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: #f8f9fa;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+
+    .tag-btn:hover {
+      border-color: #007bff;
+      background: #e9ecef;
+    }
+
+    .tag-btn.selected {
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn-back {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-save {
+      background: #007bff;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      .title {
+        font-size: 24px;
+      }
+
+      .radio-group {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .button-group {
+        justify-content: center;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Work Preference</h1>
+
+    <div class="section">
+      <div class="section-title">Visibility Preferences</div>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="visibility" value="public" checked>
+          Open to public
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="visibility" value="recruiters">
+          Recruiters only
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Work Status</div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="workStatus">
+        <span class="slider"></span>
+      </label>
+      <span class="toggle-label">Open to work</span>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Work Type</div>
+      <div class="button-group">
+        <button class="option-btn" data-type="workType" data-value="Full Time">Full Time</button>
+        <button class="option-btn" data-type="workType" data-value="Part Time">Part Time</button>
+        <button class="option-btn" data-type="workType" data-value="Contract Work">Contract Work</button>
+        <button class="option-btn" data-type="workType" data-value="Internship">Internship</button>
+        <button class="option-btn" data-type="workType" data-value="Gig Work">Gig Work</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Work Location</div>
+      <div class="button-group">
+        <button class="option-btn" data-type="workLocation" data-value="On-Site">On-Site</button>
+        <button class="option-btn" data-type="workLocation" data-value="Remote">Remote</button>
+        <button class="option-btn" data-type="workLocation" data-value="Hybrid">Hybrid</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Important To Me</div>
+      <div class="tag-group">
+        <button class="tag-btn" data-type="important" data-value="Career advancement">Career advancement</button>
+        <button class="tag-btn" data-type="important" data-value="Work-life balance">Work-life balance</button>
+        <button class="tag-btn" data-type="important" data-value="Company Culture">Company Culture</button>
+        <button class="tag-btn" data-type="important" data-value="Flexible work hours">Flexible work hours</button>
+        <button class="tag-btn" data-type="important" data-value="Personal development programs">Personal development programs</button>
+        <button class="tag-btn" data-type="important" data-value="Healthcare benefits">Healthcare benefits</button>
+        <button class="tag-btn" data-type="important" data-value="Work from home option">Work from home option</button>
+        <button class="tag-btn" data-type="important" data-value="Paid time off">Paid time off</button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-back" id="backBtn">Back</button>
+      <button class="btn btn-save" id="saveBtn">Save</button>
+    </div>
+  </div>
+
+  <script>
+    // State variables
+    let preferences = {
+      visibility: 'public',
+      workStatus: false,
+      workType: [],
+      workLocation: [],
+      important: []
+    };
+
+    // Load saved preferences
+    window.addEventListener('load', function() {
+      const saved = localStorage.getItem('workPreferences');
+      if (saved) {
+        preferences = JSON.parse(saved);
+        updateUI();
+      }
+    });
+
+    // Visibility radio buttons
+    document.querySelectorAll('input[name="visibility"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        preferences.visibility = this.value;
+      });
+    });
+
+    // Work status toggle
+    document.getElementById('workStatus').addEventListener('change', function() {
+      preferences.workStatus = this.checked;
+    });
+
+    // Option buttons (multi-select)
+    document.querySelectorAll('.option-btn, .tag-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const type = this.getAttribute('data-type');
+        const value = this.getAttribute('data-value');
+        const array = preferences[type];
+
+        if (array.includes(value)) {
+          array.splice(array.indexOf(value), 1);
+          this.classList.remove('selected');
+        } else {
+          array.push(value);
+          this.classList.add('selected');
+        }
+      });
+    });
+
+    // Update UI from preferences
+    function updateUI() {
+      // Visibility
+      document.querySelector(`input[name="visibility"][value="${preferences.visibility}"]`).checked = true;
+
+      // Work status
+      document.getElementById('workStatus').checked = preferences.workStatus;
+
+      // Multi-select buttons
+      document.querySelectorAll('.option-btn, .tag-btn').forEach(btn => {
+        const type = btn.getAttribute('data-type');
+        const value = btn.getAttribute('data-value');
+        if (preferences[type].includes(value)) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+    }
+
+    // Back button
+    document.getElementById('backBtn').addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    // Save button
+    document.getElementById('saveBtn').addEventListener('click', function() {
+      localStorage.setItem('workPreferences', JSON.stringify(preferences));
+      console.log('Saved work preferences:', preferences);
+      alert('Work preferences saved successfully!');
+    });
+  </script>
+</body>
+</html>

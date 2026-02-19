@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Resume Sections</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 40px;
+    }
+
+    .left-panel {
+      flex: 1;
+    }
+
+    .right-panel {
+      flex: 1;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid #ddd;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #090909;
+    }
+
+    .preview-link {
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .preview-link:hover {
+      text-decoration: underline;
+    }
+
+    .section-group {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .custom-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .custom-section input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .custom-input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .custom-input:disabled {
+      background-color: #f5f5f5;
+      color: #999;
+    }
+
+    .custom-textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-top: 10px;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .custom-textarea:disabled {
+      background-color: #f5f5f5;
+      color: #999;
+    }
+
+    .custom-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .custom-item .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #dc3545;
+    }
+
+    .custom-item .delete-btn:hover {
+      opacity: 0.7;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn-back {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-save {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 800px;
+      width: 90%;
+      max-height: 80%;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .resume-preview {
+      font-family: 'Times New Roman', serif;
+      line-height: 1.4;
+    }
+
+    .resume-section {
+      margin-bottom: 20px;
+    }
+
+    .section-header {
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 1px solid #000;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+    }
+
+    .section-content {
+      margin-left: 10px;
+    }
+
+    .section-item {
+      margin-bottom: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <div class="header">
+        <h1 class="title">Select Resume Sections</h1>
+        <a class="preview-link" id="previewLink">Preview</a>
+      </div>
+
+      <div class="section-group">
+        <div class="section-title">Standard Sections</div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="summary" name="sections" value="summary">
+          <label for="summary">Summary</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="education" name="sections" value="education">
+          <label for="education">Education</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="work-history" name="sections" value="work-history">
+          <label for="work-history">Work History</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="skills" name="sections" value="skills">
+          <label for="skills">Skills</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="software" name="sections" value="software">
+          <label for="software">Software</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="languages" name="sections" value="languages">
+          <label for="languages">Languages</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="portfolio" name="sections" value="portfolio">
+          <label for="portfolio">Portfolio</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="websites" name="sections" value="websites">
+          <label for="websites">Websites</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="affiliations" name="sections" value="affiliations">
+          <label for="affiliations">Affiliations</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="interest" name="sections" value="interest">
+          <label for="interest">Interest</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="additional_information" name="sections" value="additional_information">
+          <label for="additional_information">Additional Information</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="certification" name="sections" value="certification">
+          <label for="certification">Certification</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="accomplishments" name="sections" value="accomplishments">
+          <label for="accomplishments">Accomplishments</label>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section-title">Custom Section</div>
+        <div class="custom-section">
+          <input type="checkbox" id="custom" name="sections" value="custom">
+          <label for="custom">ADD YOUR OWN</label>
+        </div>
+        <div id="customContainer">
+          <div class="custom-item">
+            <input type="text" class="custom-input" placeholder="Enter custom section name" disabled>
+            <textarea class="custom-textarea" placeholder="Enter custom section content" disabled></textarea>
+            <button class="delete-btn" onclick="deleteCustom(this)">🗑️</button>
+          </div>
+        </div>
+        <a class="add-link" id="addCustomLink">+ Add one more</a>
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-back" id="backBtn">Back</button>
+        <button class="btn btn-save" id="saveBtn">Save & Next</button>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <h2>Live Preview</h2>
+      <div id="resumePreview" class="resume-preview">
+        <!-- Resume preview will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal" id="previewModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Resume Preview</h2>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <div id="modalResumePreview" class="resume-preview">
+        <!-- Modal resume preview -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const checkboxes = document.querySelectorAll('input[name="sections"]');
+    const customCheckbox = document.getElementById('custom');
+    const customContainer = document.getElementById('customContainer');
+    const addCustomLink = document.getElementById('addCustomLink');
+    const previewLink = document.getElementById('previewLink');
+    const previewModal = document.getElementById('previewModal');
+    const closeModal = document.getElementById('closeModal');
+    const resumePreview = document.getElementById('resumePreview');
+    const modalResumePreview = document.getElementById('modalResumePreview');
+    const backBtn = document.getElementById('backBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // Section data mapping
+    const sectionTitles = {
+      summary: 'Summary',
+      education: 'Education',
+      'work-history': 'Work History',
+      skills: 'Skills',
+      software: 'Software',
+      languages: 'Languages',
+      portfolio: 'Portfolio',
+      websites: 'Websites',
+      affiliations: 'Affiliations',
+      interest: 'Interest',
+      additional_information: 'Additional Information',
+      certification: 'Certification',
+      accomplishments: 'Accomplishments',
+      custom: 'Custom'
+    };
+
+    // Load saved selections on page load
+    window.addEventListener('load', function() {
+      const savedSections = localStorage.getItem('selectedSections');
+      if (savedSections) {
+        const sections = JSON.parse(savedSections);
+        sections.forEach(section => {
+          const checkbox = document.getElementById(section);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+      }
+      const savedCustomSections = localStorage.getItem('customSections');
+      if (savedCustomSections) {
+        const customSections = JSON.parse(savedCustomSections);
+        customSections.forEach((item, index) => {
+          if (index === 0) {
+            const firstItem = customContainer.querySelector('.custom-item');
+            firstItem.querySelector('.custom-input').value = item.name;
+            firstItem.querySelector('.custom-textarea').value = item.content;
+            firstItem.querySelector('.custom-input').addEventListener('input', updatePreview);
+            firstItem.querySelector('.custom-textarea').addEventListener('input', updatePreview);
+          } else {
+            addCustomItem(item.name, item.content);
+          }
+        });
+        customCheckbox.checked = true;
+        toggleCustomInputs(true);
+      } else {
+        // Add listeners to initial item
+        const firstItem = customContainer.querySelector('.custom-item');
+        firstItem.querySelector('.custom-input').addEventListener('input', updatePreview);
+        firstItem.querySelector('.custom-textarea').addEventListener('input', updatePreview);
+      }
+      updatePreview();
+    });
+
+    // Custom checkbox toggle
+    customCheckbox.addEventListener('change', function() {
+      toggleCustomInputs(this.checked);
+      if (!this.checked) {
+        clearCustomItems();
+      }
+      updatePreview();
+    });
+
+    // Function to toggle custom inputs
+    function toggleCustomInputs(enabled) {
+      const inputs = customContainer.querySelectorAll('input, textarea');
+      inputs.forEach(input => {
+        input.disabled = !enabled;
+      });
+    }
+
+    // Function to clear custom items
+    function clearCustomItems() {
+      const items = customContainer.querySelectorAll('.custom-item');
+      items.forEach((item, index) => {
+        if (index > 0) {
+          item.remove();
+        } else {
+          item.querySelector('.custom-input').value = '';
+          item.querySelector('.custom-textarea').value = '';
+        }
+      });
+    }
+
+    // Add custom link
+    addCustomLink.addEventListener('click', function() {
+      addCustomItem();
+    });
+
+    // Function to add custom item
+    function addCustomItem(name = '', content = '') {
+      const item = document.createElement('div');
+      item.className = 'custom-item';
+      item.innerHTML = `
+        <input type="text" class="custom-input" placeholder="Enter custom section name" value="${name}" disabled>
+        <textarea class="custom-textarea" placeholder="Enter custom section content" disabled>${content}</textarea>
+        <button class="delete-btn" onclick="deleteCustom(this)">🗑️</button>
+      `;
+      customContainer.appendChild(item);
+      if (customCheckbox.checked) {
+        toggleCustomInputs(true);
+      }
+      // Add event listeners for new inputs
+      item.querySelector('.custom-input').addEventListener('input', updatePreview);
+      item.querySelector('.custom-textarea').addEventListener('input', updatePreview);
+    }
+
+    // Function to delete custom item
+    function deleteCustom(button) {
+      const items = customContainer.querySelectorAll('.custom-item');
+      if (items.length > 1) {
+        button.closest('.custom-item').remove();
+        updatePreview();
+      } else {
+        alert('At least one custom section must remain.');
+      }
+    }
+
+    // Checkbox changes
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', updatePreview);
+    });
+
+    // Update preview
+    function updatePreview() {
+      const selectedSections = [];
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          selectedSections.push(checkbox.value);
+        }
+      });
+
+      let previewHTML = '';
+      selectedSections.forEach(section => {
+        if (section === 'custom') {
+          const customItems = customContainer.querySelectorAll('.custom-item');
+          customItems.forEach(item => {
+            const nameInput = item.querySelector('.custom-input');
+            const contentTextarea = item.querySelector('.custom-textarea');
+            const title = nameInput.value.trim() || 'Custom Section';
+            const content = contentTextarea.value.trim().replace(/\n/g, '<br>') || 'No content';
+            previewHTML += `
+              <div class="resume-section">
+                <div class="section-header">${title}</div>
+                <div class="section-content"><div class="section-item">${content}</div></div>
+              </div>
+            `;
+          });
+        } else {
+          let title = sectionTitles[section];
+          let content = getSectionContent(section);
+          previewHTML += `
+            <div class="resume-section">
+              <div class="section-header">${title}</div>
+              <div class="section-content">${content}</div>
+            </div>
+          `;
+        }
+      });
+
+      resumePreview.innerHTML = previewHTML;
+      modalResumePreview.innerHTML = previewHTML;
+    }
+
+    // Get section content from localStorage
+    function getSectionContent(section) {
+      const saved = localStorage.getItem(section);
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (Array.isArray(data)) {
+          return data.map(item => `<div class="section-item">${item}</div>`).join('');
+        } else {
+          return `<div class="section-item">${data}</div>`;
+        }
+      } else {
+        return '<div class="section-item">No data available</div>';
+      }
+    }
+
+    // Preview link
+    previewLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      previewModal.style.display = 'flex';
+    });
+
+    // Close modal
+    closeModal.addEventListener('click', function() {
+      previewModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+      if (e.target === previewModal) {
+        previewModal.style.display = 'none';
+      }
+    });
+
+    // Back button
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    // Save button
+    saveBtn.addEventListener('click', function() {
+      const selectedSections = [];
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          selectedSections.push(checkbox.value);
+        }
+      });
+
+      localStorage.setItem('selectedSections', JSON.stringify(selectedSections));
+      if (customCheckbox.checked) {
+        const customSections = [];
+        const customItems = customContainer.querySelectorAll('.custom-item');
+        customItems.forEach(item => {
+          const name = item.querySelector('.custom-input').value.trim();
+          const content = item.querySelector('.custom-textarea').value.trim();
+          if (name || content) {
+            customSections.push({ name, content });
+          }
+        });
+        localStorage.setItem('customSections', JSON.stringify(customSections));
+      } else {
+        localStorage.removeItem('customSections');
+      }
+
+      alert('Saved!');
+      // Proceed to next step, e.g., redirect or something
+      // For now, just alert
+    });
+  </script>
+</body>
+</html>

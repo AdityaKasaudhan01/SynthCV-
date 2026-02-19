@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Info - SynthCV</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .preview-link {
+            color: #0066FF;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .preview-link:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .section p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0066FF;
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+        }
+
+        .form-control::placeholder {
+            color: #999;
+        }
+
+        .email-group {
+            position: relative;
+        }
+
+        .checkmark {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #28a745;
+            font-size: 16px;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .link-text {
+            color: #000;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .link-text:hover {
+            color: #333;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back {
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-save {
+            background: #0066FF;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #0052cc;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+            border-color: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Contact Info</h1>
+            <a href="#" class="preview-link">
+                <span>👁️</span> Preview
+            </a>
+        </div>
+
+        <!-- Public Information Section -->
+        <div class="section">
+            <h2>Public Information</h2>
+            <p>Edit basic information displayed on your Bold Profile</p>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FIRST NAME</label>
+                    <input type="text" class="form-control" id="firstName" value="John">
+                </div>
+                <div class="form-group">
+                    <label>LAST NAME</label>
+                    <input type="text" class="form-control" id="lastName" value="Smith">
+                </div>
+                <div class="form-group">
+                    <label>PROFESSION</label>
+                    <input type="text" class="form-control" id="profession" value="Cashier">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>CITY</label>
+                    <input type="text" class="form-control" id="city" placeholder="e.g. San Francisco">
+                </div>
+                <div class="form-group">
+                    <label>STATE/PROVINCE</label>
+                    <input type="text" class="form-control" id="state" placeholder="e.g. OxfordShire">
+                </div>
+                <div class="form-group">
+                    <label>COUNTRY</label>
+                    <select class="form-control" id="country">
+                        <option value="India" selected>India</option>
+                        <option value="USA">USA</option>
+                        <option value="UK">UK</option>
+                        <option value="Canada">Canada</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Private Information Section -->
+        <div class="section">
+            <h2>Private Information</h2>
+            <p>This information will not be displayed on your Bold Profile</p>
+
+            <div class="form-group">
+                <label>Where would you like your contact form messages sent? <span class="link-text">See how it works</span></label>
+                <div class="email-group">
+                    <input type="email" class="form-control" id="email" value="microsoftadi05@gmail.com">
+                    <span class="checkmark">✓</span>
+                </div>
+                <div class="note">* Changing this does not affect your account login</div>
+            </div>
+
+            <div class="form-group">
+                <label>ZIP CODE</label>
+                <input type="text" class="form-control" id="zipCode" placeholder="e.g. OX1 3EX">
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+            <button type="button" class="btn btn-delete" onclick="deleteContactInfo()">Delete</button>
+            <button type="button" class="btn btn-save" onclick="saveContactInfo()">Save</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'profile.html';
+            }
+        }
+
+        function saveContactInfo() {
+            // Collect form data using IDs
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const profession = document.getElementById('profession').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const country = document.getElementById('country').value;
+            const email = document.getElementById('email').value;
+            const zipCode = document.getElementById('zipCode').value;
+
+            const contactData = {
+                firstName,
+                lastName,
+                profession,
+                city,
+                state,
+                country,
+                email,
+                zipCode
+            };
+
+            // Basic validation
+            if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+                alert('Please fill in required fields (First Name, Last Name, Email).');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('contactInfo', JSON.stringify(contactData));
+
+            alert('Contact information saved successfully!');
+            console.log('Saved contact info:', contactData);
+        }
+
+        function deleteContactInfo() {
+            if (confirm('Are you sure you want to delete your contact information?')) {
+                localStorage.removeItem('contactInfo');
+                // Reset form to default values
+                document.getElementById('firstName').value = 'John';
+                document.getElementById('lastName').value = 'Smith';
+                document.getElementById('profession').value = 'Cashier';
+                document.getElementById('city').value = '';
+                document.getElementById('state').value = '';
+                document.getElementById('country').value = 'India';
+                document.getElementById('email').value = 'microsoftadi05@gmail.com';
+                document.getElementById('zipCode').value = '';
+                alert('Contact information deleted successfully!');
+            }
+        }
+
+        // Load saved data on page load
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('contactInfo');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                // Populate form fields with saved data
+                document.getElementById('firstName').value = data.firstName || 'John';
+                document.getElementById('lastName').value = data.lastName || 'Smith';
+                document.getElementById('profession').value = data.profession || 'Cashier';
+                document.getElementById('city').value = data.city || '';
+                document.getElementById('state').value = data.state || '';
+                document.getElementById('country').value = data.country || 'India';
+                document.getElementById('email').value = data.email || 'microsoftadi05@gmail.com';
+                document.getElementById('zipCode').value = data.zipCode || '';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="title" content="Resume Now - Resume Builder" />
+    <title>SynthCV - Resume Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+      /* Global styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        font-family: 'Arial', sans-serif;
+        height: 100%;
+        color: #333;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      /* Header */
+      .header {
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2e2e2e;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+      }
+
+      .nav-link {
+        color: #666;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover {
+        background: #f0f0f0;
+        color: #333;
+      }
+
+      .nav-link.active {
+        background: #00d4aa;
+        color: white;
+      }
+
+      /* Dropdown styles */
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 6px;
+        min-width: 150px;
+        display: none;
+        z-index: 1000;
+        padding: 0;
+        margin: 0;
+      }
+
+      .dropdown-menu li {
+        list-style: none;
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 10px 16px;
+        color: #666;
+        text-decoration: none;
+        transition: background 0.3s ease;
+      }
+
+      .dropdown-menu a:hover {
+        background: #f0f0f0;
+        color: #333;
+      }
+
+      .dropdown.show .dropdown-menu {
+        display: block;
+      }
+
+      /* Main container */
+      .builder-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 30px;
+        min-height: calc(100vh - 70px);
+      }
+
+      /* Form section */
+      .form-section {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        max-height: calc(100vh - 110px);
+        overflow-y: auto;
+      }
+
+      .form-section h2 {
+        color: #2e2e2e;
+        margin-bottom: 20px;
+        font-size: 24px;
+        border-bottom: 2px solid #00d4aa;
+        padding-bottom: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #00d4aa;
+        box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2);
+      }
+
+      .textarea-control {
+        min-height: 80px;
+        resize: vertical;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .add-btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.3s ease;
+      }
+
+      .add-btn:hover {
+        background: #0056b3;
+      }
+
+      .entry-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        position: relative;
+      }
+
+      .remove-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      /* Template selection */
+      .template-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .template-option {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .template-option:hover {
+        border-color: #00d4aa;
+      }
+
+      .template-option.selected {
+        border-color: #00d4aa;
+        background: rgba(0, 212, 170, 0.1);
+      }
+
+      .template-name {
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .template-desc {
+        font-size: 12px;
+        color: #666;
+      }
+
+      /* Customization section */
+      .customization-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+      }
+
+      .color-picker {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .color-option {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid #ddd;
+        transition: border-color 0.3s ease;
+      }
+
+      .color-option:hover {
+        border-color: #333;
+      }
+
+      .color-option.selected {
+        border-color: #333;
+        transform: scale(1.1);
+      }
+
+      /* Preview section */
+      .preview-section {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 90px;
+        max-height: calc(100vh - 110px);
+        overflow-y: auto;
+      }
+
+      .preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .preview-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #2e2e2e;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .download-btn, .save-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .download-btn {
+        background: #28a745;
+        color: white;
+      }
+
+      .download-btn:hover {
+        background: #218838;
+      }
+
+      .save-btn {
+        background: #007bff;
+        color: white;
+      }
+
+      .save-btn:hover {
+        background: #0056b3;
+      }
+
+      .resume-preview {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 30px;
+        background: white;
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .preview-name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #2e2e2e;
+      }
+
+      .preview-contact {
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .preview-section-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #2e2e2e;
+        margin: 20px 0 10px 0;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+      }
+
+      .preview-item {
+        margin-bottom: 15px;
+      }
+
+      .preview-job-title {
+        font-weight: bold;
+        color: #2e2e2e;
+      }
+
+      .preview-company {
+        color: #666;
+        font-style: italic;
+      }
+
+      .preview-dates {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .preview-description {
+        margin-top: 5px;
+        color: #555;
+      }
+
+      /* Education form styles */
+      .education-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .education-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .education-subtitle {
+        font-size: 16px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      .preview-link {
+        color: #0066FF;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .date-row {
+        display: flex;
+        gap: 10px;
+      }
+
+      .date-row .form-group {
+        flex: 1;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .checkbox-group input {
+        margin-right: 10px;
+      }
+
+      .add-description {
+        color: #0066FF;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+
+      .education-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-back {
+        background: transparent;
+        border: 1px solid #ddd;
+        color: #333;
+      }
+
+      .btn-back:hover {
+        background: #f0f0f0;
+      }
+
+      .btn-save {
+        background: #0066FF;
+        color: white;
+      }
+
+      .btn-save:hover {
+        background: #0052cc;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .builder-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .preview-section {
+          position: static;
+          order: -1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header-content {
+          padding: 0 15px;
+          height: 60px;
+        }
+
+        .nav-menu {
+          display: none;
+        }
+
+        .builder-container {
+          padding: 15px;
+        }
+
+        .form-section, .preview-section {
+          padding: 20px;
+        }
+
+        .template-grid {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .education-buttons {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .date-row {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">SynthCV</div>
+        <nav>
+          <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="documents.html" class="nav-link active">Documents</a></li>
+            <li><a href="skills.html" class="nav-link">Skills</a></li>
+           
+            <li><a href="#" class="nav-link">Jobs</a></li>
+            <li class="dropdown">
+              <a href="profile.html" class="nav-link dropdown-toggle">Bold Profile</a>
+              <ul class="dropdown-menu">
+                <li><a href="profile.html">View Profile</a></li>
+                <li><a href="profile.html">Edit Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+              </ul>
+            </li>
+            <li><a href="#" class="nav-link">Contact Us</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="builder-container">
+      <!-- Form Section -->
+      <div class="form-section">
+        <h2>Resume Builder</h2>
+
+        <!-- Template Selection -->
+        <div class="form-group">
+          <label>Select Template</label>
+          <div class="template-grid">
+            <div class="template-option selected" data-template="modern">
+              <div class="template-name">Modern</div>
+              <div class="template-desc">Clean & Professional</div>
+            </div>
+            <div class="template-option" data-template="classic">
+              <div class="template-name">Classic</div>
+              <div class="template-desc">Traditional Style</div>
+            </div>
+            <div class="template-option" data-template="creative">
+              <div class="template-name">Creative</div>
+              <div class="template-desc">Unique Design</div>
+            </div>
+            <div class="template-option" data-template="minimal">
+              <div class="template-name">Minimal</div>
+              <div class="template-desc">Simple & Elegant</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal Details -->
+        <div class="form-group">
+          <h3>Personal Details</h3>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" id="fullName" placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" id="email" placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" class="form-control" id="phone" placeholder="(555) 123-4567">
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" class="form-control" id="address" placeholder="City, State, ZIP">
+          </div>
+          <div class="form-group">
+            <label>Profile Summary</label>
+            <textarea class="form-control textarea-control" id="summary" placeholder="Brief summary about yourself..."></textarea>
+          </div>
+        </div>
+
+        <!-- Work Experience -->
+        <div class="form-group">
+          <div class="section-header">
+            <h3>Work Experience</h3>
+            <button class="add-btn" onclick="addWorkExperience()">+ Add</button>
+          </div>
+          <div id="work-experience-list">
+            <div class="entry-item">
+              <button class="remove-btn" onclick="removeEntry(this)">×</button>
+              <div class="form-group">
+                <label>Job Title</label>
+                <input type="text" class="form-control" placeholder="Software Engineer">
+              </div>
+              <div class="form-group">
+                <label>Company</label>
+                <input type="text" class="form-control" placeholder="Tech Company Inc.">
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                  <label>Start Date</label>
+                  <input type="text" class="form-control" placeholder="Jan 2020">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                  <label>End Date</label>
+                  <input type="text" class="form-control" placeholder="Present">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control textarea-control" placeholder="Describe your responsibilities and achievements..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="form-group">
+          <div class="education-header">
+            <div>
+              <h3 class="education-title">Tell us about your education</h3>
+              <p class="education-subtitle">Include every school, even if you're still there or didn't graduate.</p>
+            </div>
+            <a href="#" class="preview-link">Preview</a>
+          </div>
+          <form id="educationForm">
+            <div class="form-group">
+              <label for="schoolName">School Name</label>
+              <input type="text" id="schoolName" class="form-control" placeholder="e.g. San Jose State">
+            </div>
+            <div class="form-group">
+              <label for="schoolLocation">School Location</label>
+              <input type="text" id="schoolLocation" class="form-control" placeholder="e.g. San Jose">
+            </div>
+            <div class="form-group">
+              <label for="degree">Degree</label>
+              <select id="degree" class="form-control">
+                <option value="">Select Degree</option>
+                <option value="Bachelor's">Bachelor's</option>
+                <option value="Master's">Master's</option>
+                <option value="PhD">PhD</option>
+                <option value="Diploma">Diploma</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fieldOfStudy">Field of Study</label>
+              <input type="text" id="fieldOfStudy" class="form-control" placeholder="e.g. Accountant">
+            </div>
+            <div class="date-row">
+              <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="month" id="startDate" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="endDate">Graduation Date or End Date</label>
+                <input type="month" id="endDate" class="form-control">
+              </div>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="currentlyAttend">
+              <label for="currentlyAttend">I currently attend here</label>
+            </div>
+            <a href="#" class="add-description">+ Add a description to this section</a>
+            <div class="education-buttons">
+              <button type="button" class="btn btn-back" id="backBtn">← Back</button>
+              <button type="button" class="btn btn-save" id="saveBtn">Save</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Skills -->
+        <div class="form-group">
+          <div class="section-header">
+            <h3>Skills</h3>
+            <a href="skills.html" class="preview-link">Edit Skills</a>
+          </div>
+          <div id="skills-list">
+            <div class="entry-item">
+              <button class="remove-btn" onclick="removeEntry(this)">×</button>
+              <div class="form-group">
+                <label>Skill</label>
+                <input type="text" class="form-control" placeholder="JavaScript">
+              </div>
+              <div class="form-group">
+                <label>Level</label>
+                <select class="form-control" aria-label="Skill Level">
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                  <option>Expert</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="form-group">
+          <div class="section-header">
+            <h3>Projects</h3>
+            <button class="add-btn" onclick="addProject()">+ Add</button>
+          </div>
+          <div id="projects-list">
+            <div class="entry-item">
+              <button class="remove-btn" onclick="removeEntry(this)">×</button>
+              <div class="form-group">
+                <label>Project Name</label>
+                <input type="text" class="form-control" placeholder="E-commerce Website">
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control textarea-control" placeholder="Describe the project, technologies used, and your role..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>Technologies</label>
+                <input type="text" class="form-control" placeholder="React, Node.js, MongoDB">
+              </div>
+              <div class="form-group">
+                <label>Link (optional)</label>
+                <input type="url" class="form-control" placeholder="https://github.com/username/project">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="form-group">
+          <div class="section-header">
+            <h3>Certifications</h3>
+            <button class="add-btn" onclick="addCertification()">+ Add</button>
+          </div>
+          <div id="certifications-list">
+            <div class="entry-item">
+              <button class="remove-btn" onclick="removeEntry(this)">×</button>
+              <div class="form-group">
+                <label>Certification Name</label>
+                <input type="text" class="form-control" placeholder="AWS Certified Developer">
+              </div>
+              <div class="form-group">
+                <label>Issuing Organization</label>
+                <input type="text" class="form-control" placeholder="Amazon Web Services">
+              </div>
+              <div class="form-group">
+                <label>Issue Date</label>
+                <input type="month" class="form-control" placeholder="2023-06">
+              </div>
+              <div class="form-group">
+                <label>Expiration Date (optional)</label>
+                <input type="month" class="form-control" placeholder="2026-06">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customization -->
+        <div class="form-group">
+          <h3>Customization</h3>
+          <div class="customization-grid">
+            <div class="form-group">
+              <label for="fontSelect">Font</label>
+              <select class="form-control" id="fontSelect">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Calibri">Calibri</option>
+                <option value="Georgia">Georgia</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Color Scheme</label>
+              <div class="color-picker">
+                <div class="color-option" style="background: #2e2e2e;" data-color="#2e2e2e" title="Black"></div>
+                <div class="color-option selected" style="background: #00d4aa;" data-color="#00d4aa" title="Teal"></div>
+                <div class="color-option" style="background: #007bff;" data-color="#007bff" title="Blue"></div>
+                <div class="color-option" style="background: #28a745;" data-color="#28a745" title="Green"></div>
+                <div class="color-option" style="background: #dc3545;" data-color="#dc3545" title="Red"></div>
+                <div class="color-option" style="background: #ffc107;" data-color="#ffc107" title="Yellow"></div>
+                <div class="color-option" style="background: #6f42c1;" data-color="#6f42c1" title="Purple"></div>
+                <div class="color-option" style="background: #fd7e14;" data-color="#fd7e14" title="Orange"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview Section -->
+      <div class="preview-section">
+        <div class="preview-header">
+          <h3 class="preview-title">Resume Preview</h3>
+          <div class="action-buttons">
+            <button class="save-btn" onclick="saveResume()">Save Resume</button>
+            <button class="download-btn" onclick="downloadResume()">Download PDF</button>
+          </div>
+        </div>
+
+        <div class="resume-preview" id="resumePreview">
+          <div class="preview-name" id="previewName">Your Name</div>
+          <div class="preview-contact" id="previewContact">
+            email@example.com | (555) 123-4567<br>
+            City, State, ZIP
+          </div>
+
+          <div class="preview-summary" id="previewSummary" style="margin: 20px 0; color: #555;">
+            Professional summary will appear here...
+          </div>
+
+          <div class="preview-section-title">WORK EXPERIENCE</div>
+          <div id="previewWorkExperience">
+            <div class="preview-item">
+              <div class="preview-job-title">Job Title</div>
+              <div class="preview-company">Company Name</div>
+              <div class="preview-dates">Start Date - End Date</div>
+              <div class="preview-description">Job description and achievements will appear here...</div>
+            </div>
+          </div>
+
+          <div class="preview-section-title">EDUCATION</div>
+          <div id="previewEducation">
+            <div class="preview-item">
+              <div class="preview-job-title">Degree Name</div>
+              <div class="preview-company">School Name</div>
+              <div class="preview-dates">Start Year - End Year</div>
+            </div>
+          </div>
+
+          <div class="preview-section-title">SKILLS</div>
+          <div id="previewSkills">
+            <div class="preview-description">Skills will appear here...</div>
+          </div>
+
+          <div class="preview-section-title">PROJECTS</div>
+          <div id="previewProjects">
+            <div class="preview-item">
+              <div class="preview-job-title">Project Name</div>
+              <div class="preview-description">Project description and technologies will appear here...</div>
+            </div>
+          </div>
+
+          <div class="preview-section-title">CERTIFICATIONS</div>
+          <div id="previewCertifications">
+            <div class="preview-item">
+              <div class="preview-job-title">Certification Name</div>
+              <div class="preview-company">Issuing Organization</div>
+              <div class="preview-dates">Issue Date</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Template selection
+      document.querySelectorAll('.template-option').forEach(option => {
+        option.addEventListener('click', function() {
+          document.querySelectorAll('.template-option').forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+        });
+      });
+
+      // Color selection
+      document.querySelectorAll('.color-option').forEach(option => {
+        option.addEventListener('click', function() {
+          document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          updatePreview();
+        });
+      });
+
+      // Real-time preview updates
+      document.addEventListener('input', updatePreview);
+      document.addEventListener('change', updatePreview);
+
+      function updatePreview() {
+        console.log('updatePreview called');
+
+        // Personal details
+        const fullName = document.getElementById('fullName').value || 'Your Name';
+        const email = document.getElementById('email').value || 'email@example.com';
+        const phone = document.getElementById('phone').value || '(555) 123-4567';
+        const address = document.getElementById('address').value || 'City, State, ZIP';
+        const summary = document.getElementById('summary').value || 'Professional summary will appear here...';
+
+        console.log('Personal details:', { fullName, email, phone, address, summary });
+
+        document.getElementById('previewName').textContent = fullName;
+        document.getElementById('previewContact').innerHTML = `${email} | ${phone}<br>${address}`;
+        document.getElementById('previewSummary').textContent = summary;
+
+        // Work Experience
+        const workEntries = document.querySelectorAll('#work-experience-list .entry-item');
+        console.log('Work entries found:', workEntries.length);
+        const workPreview = document.getElementById('previewWorkExperience');
+        workPreview.innerHTML = '';
+        workEntries.forEach(entry => {
+          const inputs = entry.querySelectorAll('input');
+          const jobTitle = inputs[0].value || 'Job Title';
+          const company = inputs[1].value || 'Company Name';
+          const startDate = inputs[2].value || 'Start Date';
+          const endDate = inputs[3].value || 'End Date';
+          const description = entry.querySelector('textarea').value || 'Job description...';
+          console.log('Work entry:', { jobTitle, company, startDate, endDate, description });
+
+          const workItem = document.createElement('div');
+          workItem.className = 'preview-item';
+          workItem.innerHTML = `
+            <div class="preview-job-title">${jobTitle}</div>
+            <div class="preview-company">${company}</div>
+            <div class="preview-dates">${startDate} - ${endDate}</div>
+            <div class="preview-description">${description}</div>
+          `;
+          workPreview.appendChild(workItem);
+        });
+
+        // Education
+        const schoolName = document.getElementById('schoolName').value || 'School Name';
+        const degree = document.getElementById('degree').value || 'Degree';
+        const fieldOfStudy = document.getElementById('fieldOfStudy').value || 'Field of Study';
+        const startDateEdu = document.getElementById('startDate').value || 'Start Date';
+        const endDateEdu = document.getElementById('endDate').value || 'End Date';
+        console.log('Education:', { schoolName, degree, fieldOfStudy, startDateEdu, endDateEdu });
+
+        const eduPreview = document.getElementById('previewEducation');
+        eduPreview.innerHTML = `
+          <div class="preview-item">
+            <div class="preview-job-title">${degree} in ${fieldOfStudy}</div>
+            <div class="preview-company">${schoolName}</div>
+            <div class="preview-dates">${startDateEdu} - ${endDateEdu}</div>
+          </div>
+        `;
+
+        // Skills
+        const skillsData = localStorage.getItem('skillsData');
+        const skillsPreview = document.getElementById('previewSkills');
+        skillsPreview.innerHTML = '';
+        if (skillsData) {
+          const skills = skillsData.split(',').map(s => s.trim()).filter(s => s !== '');
+          skills.forEach(skill => {
+            const skillItem = document.createElement('div');
+            skillItem.className = 'preview-description';
+            skillItem.textContent = skill;
+            skillsPreview.appendChild(skillItem);
+          });
+        } else {
+          // Fallback to form inputs if no localStorage data
+          const skillEntries = document.querySelectorAll('#skills-list .entry-item');
+          console.log('Skill entries found:', skillEntries.length);
+          skillEntries.forEach(entry => {
+            const skill = entry.querySelector('input[placeholder*="Skill"]').value || 'Skill';
+            const level = entry.querySelector('select').value || 'Beginner';
+            console.log('Skill entry:', { skill, level });
+
+            const skillItem = document.createElement('div');
+            skillItem.className = 'preview-description';
+            skillItem.textContent = `${skill} - ${level}`;
+            skillsPreview.appendChild(skillItem);
+          });
+        }
+
+        // Projects
+        const projectEntries = document.querySelectorAll('#projects-list .entry-item');
+        const projectsPreview = document.getElementById('previewProjects');
+        projectsPreview.innerHTML = '';
+        const projectsData = [];
+        projectEntries.forEach(entry => {
+          const name = entry.querySelector('input[placeholder*="Project Name"]').value || 'Project Name';
+          const description = entry.querySelector('textarea').value || 'Project description...';
+          const technologies = entry.querySelector('input[placeholder*="Technologies"]').value || '';
+          const link = entry.querySelector('input[type="url"]').value || '';
+
+          const projectItem = document.createElement('div');
+          projectItem.className = 'preview-item';
+          projectItem.innerHTML = `
+            <div class="preview-job-title">${name}</div>
+            <div class="preview-description">${description}</div>
+            ${technologies ? `<div class="preview-description"><strong>Technologies:</strong> ${technologies}</div>` : ''}
+            ${link ? `<div class="preview-description"><strong>Link:</strong> <a href="${link}" target="_blank">${link}</a></div>` : ''}
+          `;
+          projectsPreview.appendChild(projectItem);
+
+          projectsData.push({ name, description, technologies, link });
+        });
+        localStorage.setItem('projectsData', JSON.stringify(projectsData));
+
+        // Certifications
+        const certEntries = document.querySelectorAll('#certifications-list .entry-item');
+        const certsPreview = document.getElementById('previewCertifications');
+        certsPreview.innerHTML = '';
+        const certsData = [];
+        certEntries.forEach(entry => {
+          const name = entry.querySelector('input[placeholder*="Certification Name"]').value || 'Certification Name';
+          const org = entry.querySelector('input[placeholder*="Issuing Organization"]').value || 'Organization';
+          const issueDate = entry.querySelector('input[placeholder*="Issue Date"]').value || 'Issue Date';
+          const expDate = entry.querySelector('input[placeholder*="Expiration Date"]').value || '';
+
+          const certItem = document.createElement('div');
+          certItem.className = 'preview-item';
+          certItem.innerHTML = `
+            <div class="preview-job-title">${name}</div>
+            <div class="preview-company">${org}</div>
+            <div class="preview-dates">${issueDate}${expDate ? ` - ${expDate}` : ''}</div>
+          `;
+          certsPreview.appendChild(certItem);
+
+          certsData.push({ name, org, issueDate, expDate });
+        });
+        localStorage.setItem('certsData', JSON.stringify(certsData));
+
+        // Font update
+        const selectedFont = document.getElementById('fontSelect').value;
+        document.getElementById('resumePreview').style.fontFamily = selectedFont;
+
+        // Color update
+        const selectedColor = document.querySelector('.color-option.selected').dataset.color;
+        document.querySelectorAll('.preview-section-title').forEach(title => {
+          title.style.borderBottomColor = selectedColor;
+        });
+        // Apply color to name and form header for better visibility
+        const previewName = document.getElementById('previewName');
+        if (previewName) previewName.style.color = selectedColor;
+        const formSection = document.querySelector('.form-section h2');
+        if (formSection) formSection.style.borderBottomColor = selectedColor;
+      }
+
+      // Add work experience
+      function addWorkExperience() {
+        console.log('addWorkExperience called');
+        const workList = document.getElementById('work-experience-list');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'entry-item';
+        newEntry.innerHTML = `
+          <button class="remove-btn" onclick="removeEntry(this)">×</button>
+          <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" class="form-control" placeholder="Software Engineer">
+          </div>
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" class="form-control" placeholder="Tech Company Inc.">
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex: 1;">
+              <label>Start Date</label>
+              <input type="text" class="form-control" placeholder="Jan 2020">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>End Date</label>
+              <input type="text" class="form-control" placeholder="Present">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control textarea-control" placeholder="Describe your responsibilities and achievements..."></textarea>
+          </div>
+        `;
+        workList.appendChild(newEntry);
+        updatePreview();
+      }
+
+      // Add education
+      function addEducation() {
+        const educationList = document.getElementById('education-list');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'entry-item';
+        newEntry.innerHTML = `
+          <button class="remove-btn" onclick="removeEntry(this)">×</button>
+          <div class="form-group">
+            <label>Degree</label>
+            <input type="text" class="form-control" placeholder="Bachelor of Science">
+          </div>
+          <div class="form-group">
+            <label>School</label>
+            <input type="text" class="form-control" placeholder="University Name">
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex: 1;">
+              <label>Start Year</label>
+              <input type="text" class="form-control" placeholder="2016">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>End Year</label>
+              <input type="text" class="form-control" placeholder="2020">
+            </div>
+          </div>
+        `;
+        educationList.appendChild(newEntry);
+      }
+
+      // Add skill
+      function addSkill() {
+        console.log('addSkill called');
+        const skillsList = document.getElementById('skills-list');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'entry-item';
+        newEntry.innerHTML = `
+          <button class="remove-btn" onclick="removeEntry(this)">×</button>
+          <div class="form-group">
+            <label>Skill</label>
+            <input type="text" class="form-control" placeholder="JavaScript">
+          </div>
+          <div class="form-group">
+            <label>Level</label>
+            <select class="form-control" aria-label="Skill Level">
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+              <option>Expert</option>
+            </select>
+          </div>
+        `;
+        skillsList.appendChild(newEntry);
+        updatePreview();
+      }
+
+      // Add project
+      function addProject() {
+        const projectsList = document.getElementById('projects-list');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'entry-item';
+        newEntry.innerHTML = `
+          <button class="remove-btn" onclick="removeEntry(this)">×</button>
+          <div class="form-group">
+            <label>Project Name</label>
+            <input type="text" class="form-control" placeholder="E-commerce Website">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control textarea-control" placeholder="Describe the project, technologies used, and your role..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Technologies</label>
+            <input type="text" class="form-control" placeholder="React, Node.js, MongoDB">
+          </div>
+          <div class="form-group">
+            <label>Link (optional)</label>
+            <input type="url" class="form-control" placeholder="https://github.com/username/project">
+          </div>
+        `;
+        projectsList.appendChild(newEntry);
+        updatePreview();
+      }
+
+      // Add certification
+      function addCertification() {
+        const certificationsList = document.getElementById('certifications-list');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'entry-item';
+        newEntry.innerHTML = `
+          <button class="remove-btn" onclick="removeEntry(this)">×</button>
+          <div class="form-group">
+            <label>Certification Name</label>
+            <input type="text" class="form-control" placeholder="AWS Certified Developer">
+          </div>
+          <div class="form-group">
+            <label>Issuing Organization</label>
+            <input type="text" class="form-control" placeholder="Amazon Web Services">
+          </div>
+          <div class="form-group">
+            <label>Issue Date</label>
+            <input type="month" class="form-control" placeholder="2023-06">
+          </div>
+          <div class="form-group">
+            <label>Expiration Date (optional)</label>
+            <input type="month" class="form-control" placeholder="2026-06">
+          </div>
+        `;
+        certificationsList.appendChild(newEntry);
+        updatePreview();
+      }
+
+      // Remove entry
+      function removeEntry(button) {
+        button.parentElement.remove();
+        updatePreview();
+      }
+
+      // Save resume
+      function saveResume() {
+        alert('Resume saved successfully!');
+        // In a real application, this would save to a database or local storage
+      }
+
+      // Download resume
+      function downloadResume() {
+        const resumeElement = document.getElementById('resumePreview');
+
+        // Create a clone of the resume for PDF generation
+        const resumeClone = resumeElement.cloneNode(true);
+
+        // Apply current styles to the clone
+        applyCurrentStylesToClone(resumeClone);
+
+        // Remove any unwanted styles or elements if needed
+        resumeClone.style.width = '210mm'; // A4 width
+        resumeClone.style.maxWidth = '210mm';
+        resumeClone.style.padding = '20mm';
+        resumeClone.style.boxSizing = 'border-box';
+        resumeClone.style.background = 'white';
+        resumeClone.style.color = 'black';
+
+        // Configure PDF options
+        const options = {
+          margin: 0,
+          filename: 'resume.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            letterRendering: true
+          },
+          jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+          }
+        };
+
+        // Generate and download PDF
+        html2pdf().set(options).from(resumeClone).save();
+      }
+
+      // Apply current styles to PDF clone
+      function applyCurrentStylesToClone(clone) {
+        const sectionTitles = clone.querySelectorAll('.preview-section-title');
+        const previewName = clone.querySelector('.preview-name');
+
+        // Apply current font
+        const selectedFont = document.getElementById('fontSelect').value;
+        clone.style.fontFamily = selectedFont;
+
+        // Apply current color
+        const selectedColor = document.querySelector('.color-option.selected').dataset.color;
+        sectionTitles.forEach(title => title.style.borderBottomColor = selectedColor);
+        if (previewName) previewName.style.color = selectedColor;
+      }
+
+      // Load saved data
+      function loadData() {
+        // Load projects
+        const projectsData = JSON.parse(localStorage.getItem('projectsData') || '[]');
+        const projectsList = document.getElementById('projects-list');
+        projectsList.innerHTML = '';
+        projectsData.forEach(project => {
+          const newEntry = document.createElement('div');
+          newEntry.className = 'entry-item';
+          newEntry.innerHTML = `
+            <button class="remove-btn" onclick="removeEntry(this)">×</button>
+            <div class="form-group">
+              <label>Project Name</label>
+              <input type="text" class="form-control" placeholder="E-commerce Website" value="${project.name || ''}">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control textarea-control" placeholder="Describe the project, technologies used, and your role...">${project.description || ''}</textarea>
+            </div>
+            <div class="form-group">
+              <label>Technologies</label>
+              <input type="text" class="form-control" placeholder="React, Node.js, MongoDB" value="${project.technologies || ''}">
+            </div>
+            <div class="form-group">
+              <label>Link (optional)</label>
+              <input type="url" class="form-control" placeholder="https://github.com/username/project" value="${project.link || ''}">
+            </div>
+          `;
+          projectsList.appendChild(newEntry);
+        });
+        if (projectsData.length === 0) {
+          // Add default empty entry
+          const defaultEntry = document.createElement('div');
+          defaultEntry.className = 'entry-item';
+          defaultEntry.innerHTML = `
+            <button class="remove-btn" onclick="removeEntry(this)">×</button>
+            <div class="form-group">
+              <label>Project Name</label>
+              <input type="text" class="form-control" placeholder="E-commerce Website">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control textarea-control" placeholder="Describe the project, technologies used, and your role..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Technologies</label>
+              <input type="text" class="form-control" placeholder="React, Node.js, MongoDB">
+            </div>
+            <div class="form-group">
+              <label>Link (optional)</label>
+              <input type="url" class="form-control" placeholder="https://github.com/username/project">
+            </div>
+          `;
+          projectsList.appendChild(defaultEntry);
+        }
+
+        // Load certifications
+        const certsData = JSON.parse(localStorage.getItem('certsData') || '[]');
+        const certsList = document.getElementById('certifications-list');
+        certsList.innerHTML = '';
+        certsData.forEach(cert => {
+          const newEntry = document.createElement('div');
+          newEntry.className = 'entry-item';
+          newEntry.innerHTML = `
+            <button class="remove-btn" onclick="removeEntry(this)">×</button>
+            <div class="form-group">
+              <label>Certification Name</label>
+              <input type="text" class="form-control" placeholder="AWS Certified Developer" value="${cert.name || ''}">
+            </div>
+            <div class="form-group">
+              <label>Issuing Organization</label>
+              <input type="text" class="form-control" placeholder="Amazon Web Services" value="${cert.org || ''}">
+            </div>
+            <div class="form-group">
+              <label>Issue Date</label>
+              <input type="month" class="form-control" placeholder="2023-06" value="${cert.issueDate || ''}">
+            </div>
+            <div class="form-group">
+              <label>Expiration Date (optional)</label>
+              <input type="month" class="form-control" placeholder="2026-06" value="${cert.expDate || ''}">
+            </div>
+          `;
+          certsList.appendChild(newEntry);
+        });
+        if (certsData.length === 0) {
+          // Add default empty entry
+          const defaultEntry = document.createElement('div');
+          defaultEntry.className = 'entry-item';
+          defaultEntry.innerHTML = `
+            <button class="remove-btn" onclick="removeEntry(this)">×</button>
+            <div class="form-group">
+              <label>Certification Name</label>
+              <input type="text" class="form-control" placeholder="AWS Certified Developer">
+            </div>
+            <div class="form-group">
+              <label>Issuing Organization</label>
+              <input type="text" class="form-control" placeholder="Amazon Web Services">
+            </div>
+            <div class="form-group">
+              <label>Issue Date</label>
+              <input type="month" class="form-control" placeholder="2023-06">
+            </div>
+            <div class="form-group">
+              <label>Expiration Date (optional)</label>
+              <input type="month" class="form-control" placeholder="2026-06">
+            </div>
+          `;
+          certsList.appendChild(defaultEntry);
+        }
+      }
+
+      loadData();
+
+      // Initialize preview
+      updatePreview();
+
+      // Handle URL template parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const templateParam = urlParams.get('template');
+      if (templateParam) {
+        const templateOption = document.querySelector(`.template-option[data-template="${templateParam}"]`);
+        if (templateOption) {
+          document.querySelectorAll('.template-option').forEach(opt => opt.classList.remove('selected'));
+          templateOption.classList.add('selected');
+          applyTemplateStyles(templateParam);
+        }
+      }
+
+      // Apply template-specific styles
+      function applyTemplateStyles(template) {
+        const resumePreview = document.getElementById('resumePreview');
+        const sectionTitles = document.querySelectorAll('.preview-section-title');
+        const formSection = document.querySelector('.form-section h2');
+        const fontSelect = document.getElementById('fontSelect');
+
+        switch (template) {
+          case 'modern':
+            resumePreview.style.fontFamily = 'Arial';
+            resumePreview.style.color = '#333';
+            sectionTitles.forEach(title => title.style.borderBottomColor = '#00d4aa');
+            if (formSection) formSection.style.borderBottomColor = '#00d4aa';
+            if (fontSelect) fontSelect.value = 'Arial';
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector('.color-option[data-color="#00d4aa"]').classList.add('selected');
+            break;
+          case 'classic':
+            resumePreview.style.fontFamily = 'Times New Roman';
+            resumePreview.style.color = '#000';
+            sectionTitles.forEach(title => title.style.borderBottomColor = '#2e2e2e');
+            if (formSection) formSection.style.borderBottomColor = '#2e2e2e';
+            if (fontSelect) fontSelect.value = 'Times New Roman';
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector('.color-option[data-color="#2e2e2e"]').classList.add('selected');
+            break;
+          case 'creative':
+            resumePreview.style.fontFamily = 'Georgia';
+            resumePreview.style.color = '#333';
+            sectionTitles.forEach(title => title.style.borderBottomColor = '#007bff');
+            if (formSection) formSection.style.borderBottomColor = '#007bff';
+            if (fontSelect) fontSelect.value = 'Georgia';
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector('.color-option[data-color="#007bff"]').classList.add('selected');
+            break;
+          case 'minimal':
+            resumePreview.style.fontFamily = 'Calibri';
+            resumePreview.style.color = '#333';
+            sectionTitles.forEach(title => title.style.borderBottomColor = '#28a745');
+            if (formSection) formSection.style.borderBottomColor = '#28a745';
+            if (fontSelect) fontSelect.value = 'Calibri';
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector('.color-option[data-color="#28a745"]').classList.add('selected');
+            break;
+        }
+        updatePreview(); // Update preview after style changes
+      }
+
+      // Update template selection to apply styles
+      document.querySelectorAll('.template-option').forEach(option => {
+        option.addEventListener('click', function() {
+          document.querySelectorAll('.template-option').forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          const template = this.dataset.template;
+          applyTemplateStyles(template);
+        });
+      });
+
+      // Dropdown toggle
+      document.querySelector('.dropdown-toggle').addEventListener('click', function(e) {
+        e.preventDefault();
+        this.parentElement.classList.toggle('show');
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+          const dropdown = document.querySelector('.dropdown');
+          if (dropdown) {
+            dropdown.classList.remove('show');
+          }
+        }
+      });
+
+      // Education form logic
+      const currentlyAttendCheckbox = document.getElementById('currentlyAttend');
+      const endDateInput = document.getElementById('endDate');
+      const saveBtn = document.getElementById('saveBtn');
+      const backBtn = document.getElementById('backBtn');
+
+      if (currentlyAttendCheckbox && endDateInput) {
+        currentlyAttendCheckbox.addEventListener('change', function() {
+          endDateInput.disabled = this.checked;
+          if (this.checked) {
+            endDateInput.value = '';
+          }
+        });
+      }
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+          const data = {
+            schoolName: document.getElementById('schoolName').value,
+            schoolLocation: document.getElementById('schoolLocation').value,
+            degree: document.getElementById('degree').value,
+            fieldOfStudy: document.getElementById('fieldOfStudy').value,
+            startDate: document.getElementById('startDate').value,
+            endDate: document.getElementById('endDate').value,
+            currentlyAttend: document.getElementById('currentlyAttend').checked
+          };
+          console.log(data);
+          alert('Education data saved: ' + JSON.stringify(data, null, 2));
+        });
+      }
+
+      if (backBtn) {
+        backBtn.addEventListener('click', function() {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            alert('No previous page to go back to.');
+          }
+        });
+      }
+    </script>
+    <script src="chatbot.js"></script>
+  </body>
+</html>

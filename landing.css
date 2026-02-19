@@ -1,0 +1,261 @@
+/* Landing Page Styles */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.landing-container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.landing-header h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.landing-subtitle {
+    font-size: 1.5rem;
+    color: #666;
+    max-width: 900px;
+    margin: 0 auto 50px;
+    line-height: 1.7;
+}
+
+.cards-section {
+    margin-bottom: 40px;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 350px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.card-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card li {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.continue-section {
+    margin-bottom: 40px;
+}
+
+.continue-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 18px 40px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.continue-button:hover {
+    background-color: #0056b3;
+}
+
+.review-section {
+    margin-bottom: 40px;
+}
+
+.review-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.review-text {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.stars {
+    font-size: 2rem;
+    color: #ffc107;
+    margin-bottom: 15px;
+}
+
+.review-count {
+    font-size: 1.8rem;
+    color: #666;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.landing-footer {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.footer-links a:hover {
+    color: #333;
+}
+
+.footer-copyright {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .landing-header h1 {
+        font-size: 2.8rem;
+    }
+
+    .landing-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 40px;
+    }
+
+    .cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 320px;
+        padding: 25px;
+    }
+
+    .card-icon {
+        font-size: 3.5rem;
+    }
+
+    .card h3 {
+        font-size: 1.6rem;
+    }
+
+    .card li {
+        font-size: 1rem;
+    }
+
+    .continue-button {
+        padding: 16px 35px;
+        font-size: 1.3rem;
+    }
+
+    .review-text {
+        font-size: 1.8rem;
+    }
+
+    .stars {
+        font-size: 1.8rem;
+    }
+
+    .review-count {
+        font-size: 1.5rem;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-container {
+        padding: 15px;
+    }
+
+    .landing-header h1 {
+        font-size: 2.4rem;
+    }
+
+    .landing-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .card {
+        padding: 20px;
+        max-width: 280px;
+    }
+
+    .card-icon {
+        font-size: 3rem;
+    }
+
+    .card h3 {
+        font-size: 1.5rem;
+    }
+
+    .continue-button {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+    }
+
+    .review-text {
+        font-size: 1.6rem;
+    }
+
+    .stars {
+        font-size: 1.6rem;
+    }
+
+    .review-count {
+        font-size: 1.3rem;
+    }
+}

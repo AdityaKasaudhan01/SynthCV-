@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills Form</title>
+  <link rel="stylesheet" href="../tryM3/chatbot.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .left-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .right-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .preview-link {
+      color: #0066FF;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .search-group {
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #0066FF;
+      box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+    }
+
+    .skills-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .skill-category {
+      margin-bottom: 20px;
+    }
+
+    .category-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .skill-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .skill-name {
+      flex: 1;
+    }
+
+    .add-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+
+    .add-btn:hover {
+      background: #218838;
+    }
+
+    .skills-editor {
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .editor-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .skills-editor-div {
+      width: 100%;
+      min-height: 300px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-y: auto;
+    }
+
+    .skills-editor-div:focus {
+      outline: none;
+      border-color: #0066FF;
+      box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+    }
+
+    .editor-toolbar {
+      margin-bottom: 10px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .toolbar-btn {
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .toolbar-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .skills-count {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background: #f0f0f0;
+    }
+
+    .btn-save {
+      background: #0066FF;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0052cc;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      border: 1px solid #dc3545;
+    }
+
+    .btn-delete:hover {
+      background: #c82333;
+      border-color: #c82333;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      .title {
+        font-size: 24px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left Section: Search and Skills List -->
+    <div class="left-section">
+      <div class="header">
+        <h1 class="title">Show your skills</h1>
+        <a href="#" class="preview-link">Preview</a>
+      </div>
+
+      <div class="search-group">
+        <input type="text" class="search-input" placeholder="Search job titles or skills..." id="searchInput">
+      </div>
+
+      <div class="skills-list" id="skillsList">
+        <!-- Job Titles -->
+        <div class="skill-category">
+          <div class="category-title">Popular Job Titles</div>
+          <div class="skill-item">
+            <span class="skill-name">Software Engineer</span>
+            <button class="add-btn" onclick="addSkill('Software Engineer')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Data Analyst</span>
+            <button class="add-btn" onclick="addSkill('Data Analyst')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Project Manager</span>
+            <button class="add-btn" onclick="addSkill('Project Manager')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Marketing Specialist</span>
+            <button class="add-btn" onclick="addSkill('Marketing Specialist')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Graphic Designer</span>
+            <button class="add-btn" onclick="addSkill('Graphic Designer')">+</button>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="skill-category">
+          <div class="category-title">Technical Skills</div>
+          <div class="skill-item">
+            <span class="skill-name">JavaScript</span>
+            <button class="add-btn" onclick="addSkill('JavaScript')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Python</span>
+            <button class="add-btn" onclick="addSkill('Python')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">React</span>
+            <button class="add-btn" onclick="addSkill('React')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">SQL</span>
+            <button class="add-btn" onclick="addSkill('SQL')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Machine Learning</span>
+            <button class="add-btn" onclick="addSkill('Machine Learning')">+</button>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <div class="category-title">Soft Skills</div>
+          <div class="skill-item">
+            <span class="skill-name">Communication</span>
+            <button class="add-btn" onclick="addSkill('Communication')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Leadership</span>
+            <button class="add-btn" onclick="addSkill('Leadership')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Problem Solving</span>
+            <button class="add-btn" onclick="addSkill('Problem Solving')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Teamwork</span>
+            <button class="add-btn" onclick="addSkill('Teamwork')">+</button>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Time Management</span>
+            <button class="add-btn" onclick="addSkill('Time Management')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: Skills Editor -->
+    <div class="right-section">
+      <div class="skills-editor">
+        <label class="editor-label">Your Skills</label>
+        <div class="editor-toolbar">
+          <button class="toolbar-btn" onclick="formatText('bold')">Bold</button>
+          <button class="toolbar-btn" onclick="formatText('italic')">Italic</button>
+          <button class="toolbar-btn" onclick="formatText('underline')">Underline</button>
+        </div>
+        <div class="skills-editor-div" id="skillsEditor" contenteditable="true" placeholder="Add your skills here..."></div>
+      </div>
+
+      <div class="skills-count" id="skillsCount">Skills: 0</div>
+
+      <div class="buttons">
+        <button type="button" class="btn btn-back" id="backBtn">← Back</button>
+        <button type="button" class="btn btn-delete" onclick="deleteSkills()">Delete</button>
+        <button type="button" class="btn btn-save" id="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const searchInput = document.getElementById('searchInput');
+    const skillsList = document.getElementById('skillsList');
+    const skillsEditor = document.getElementById('skillsEditor');
+    const skillsCount = document.getElementById('skillsCount');
+    const backBtn = document.getElementById('backBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // Function to add skill to editor
+    function addSkill(skill) {
+      const currentText = skillsEditor.textContent.trim();
+      if (currentText === '') {
+        skillsEditor.textContent = skill;
+      } else {
+        // Check if skill already exists
+        const skills = currentText.split(',').map(s => s.trim());
+        if (!skills.includes(skill)) {
+          skillsEditor.textContent = currentText + ', ' + skill;
+        }
+      }
+      updateSkillsCount();
+    }
+
+    // Function to format text
+    function formatText(command) {
+      document.execCommand(command, false, null);
+      skillsEditor.focus();
+    }
+
+    // Function to update skills count
+    function updateSkillsCount() {
+      const text = skillsEditor.textContent.trim();
+      if (text === '') {
+        skillsCount.textContent = 'Skills: 0';
+      } else {
+        const skills = text.split(',').map(s => s.trim()).filter(s => s !== '');
+        skillsCount.textContent = `Skills: ${skills.length}`;
+      }
+    }
+
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      const skillItems = skillsList.querySelectorAll('.skill-item');
+
+      skillItems.forEach(item => {
+        const skillName = item.querySelector('.skill-name').textContent.toLowerCase();
+        if (skillName.includes(query)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+
+    // Update count on editor input
+    skillsEditor.addEventListener('input', updateSkillsCount);
+
+    // Back button
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    // Delete button
+    function deleteSkills() {
+      if (confirm('Are you sure you want to delete your skills information?')) {
+        localStorage.removeItem('skillsData');
+        // Clear the editor
+        skillsEditor.textContent = '';
+        updateSkillsCount();
+        alert('Skills information deleted successfully!');
+      }
+    }
+
+    // Save button
+    saveBtn.addEventListener('click', function() {
+      const skills = skillsEditor.textContent.trim();
+      if (skills === '') {
+        alert('Please add some skills before saving.');
+        return;
+      }
+      // Save to local storage
+      localStorage.setItem('skillsData', skills);
+      alert('Skills saved successfully!');
+      console.log('Saved skills:', skills);
+    });
+
+    // Initialize
+    updateSkillsCount();
+  </script>
+  <script src="../tryM3/chatbot.js"></script>
+</body>
+</html>

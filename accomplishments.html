@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accomplishments</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .left-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .right-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-group {
+      margin-bottom: 20px;
+    }
+
+    .search-label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #0066FF;
+      box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 16px;
+    }
+
+    .search-container {
+      position: relative;
+    }
+
+    .popular-titles {
+      margin-bottom: 20px;
+    }
+
+    .popular-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .job-titles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .job-title {
+      background: #f0f0f0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .job-title:hover {
+      background: #e0e0e0;
+    }
+
+    .see-more {
+      color: #0066FF;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .suggestions {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .suggestion-card {
+      display: flex;
+      align-items: flex-start;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
+
+    .add-btn {
+      background: #ffc107;
+      color: #333;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      flex-shrink: 0;
+      transition: background 0.3s ease;
+    }
+
+    .add-btn:hover {
+      background: #e0a800;
+    }
+
+    .suggestion-text {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .right-header {
+      margin-bottom: 20px;
+    }
+
+    .right-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .right-subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .editor-container {
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.3s ease;
+    }
+
+    .toolbar-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .toolbar-btn.active {
+      background: #0066FF;
+      color: white;
+      border-color: #0066FF;
+    }
+
+    .accomplishments-editor {
+      width: 100%;
+      min-height: 300px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-y: auto;
+    }
+
+    .accomplishments-editor:focus {
+      outline: none;
+      border-color: #0066FF;
+      box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      background: white;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background: #f0f0f0;
+    }
+
+    .btn-save {
+      background: #0066FF;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0052cc;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      .right-title {
+        font-size: 20px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .editor-toolbar {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left Section: Search, Popular Titles, Suggestions -->
+    <div class="left-section">
+      <div class="search-group">
+        <label class="search-label">TITLE, INDUSTRY, KEYWORD</label>
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Ex: Cashier" id="searchInput">
+          <button class="search-icon" id="searchBtn">🔍</button>
+        </div>
+      </div>
+
+      <div class="popular-titles">
+        <div class="popular-title">Popular job titles</div>
+        <div class="job-titles">
+          <span class="job-title" onclick="filterSuggestions('Cashier')">Cashier</span>
+          <span class="job-title" onclick="filterSuggestions('Customer Service Representative')">Customer Service Representative</span>
+          <span class="job-title" onclick="filterSuggestions('Manager')">Manager</span>
+          <span class="job-title" onclick="filterSuggestions('Server')">Server</span>
+          <span class="job-title" onclick="filterSuggestions('Retail Sales Associate')">Retail Sales Associate</span>
+        </div>
+        <a href="#" class="see-more">+ See more</a>
+      </div>
+
+      <div class="suggestions" id="suggestions">
+        <!-- Suggestions will be populated by JS -->
+      </div>
+    </div>
+
+    <!-- Right Section: Editor -->
+    <div class="right-section">
+      <div class="right-header">
+        <div class="right-title">Tell us about your accomplishments</div>
+        <div class="right-subtitle">Use our expert recommendations below to get started.</div>
+      </div>
+
+      <div class="editor-container">
+        <div class="editor-toolbar">
+          <button class="toolbar-btn" onclick="formatText('bold')" id="boldBtn">Bold</button>
+          <button class="toolbar-btn" onclick="formatText('italic')" id="italicBtn">Italic</button>
+          <button class="toolbar-btn" onclick="formatText('underline')" id="underlineBtn">Underline</button>
+          <button class="toolbar-btn" onclick="formatText('insertUnorderedList')" id="bulletBtn">Bullet list</button>
+          <button class="toolbar-btn" onclick="formatText('undo')" id="undoBtn">Undo</button>
+          <button class="toolbar-btn" onclick="formatText('redo')" id="redoBtn">Redo</button>
+        </div>
+        <div class="accomplishments-editor" id="accomplishmentsEditor" contenteditable="true"></div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="btn btn-back" id="backBtn">Back</button>
+        <button type="button" class="btn btn-save" id="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const suggestions = document.getElementById('suggestions');
+    const accomplishmentsEditor = document.getElementById('accomplishmentsEditor');
+    const backBtn = document.getElementById('backBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // Sample suggestions data
+    const suggestionsData = [
+      { text: "Collaborated with team of 5 in the development of inventory management system.", job: "Manager" },
+      { text: "Achieved 95% customer satisfaction by introducing new service protocols.", job: "Customer Service Representative" },
+      { text: "Achieved $10,000 in sales by completing daily targets with accuracy and efficiency.", job: "Retail Sales Associate" },
+      { text: "Used Microsoft Excel to develop inventory tracking spreadsheets.", job: "Cashier" },
+      { text: "Supervised team of 8 staff members.", job: "Manager" },
+      { text: "Achieved 98% accuracy through effectively helping with customer transactions.", job: "Cashier" },
+      { text: "Documented and resolved software bugs which led to 20% improvement in system performance.", job: "Server" },
+      { text: "Resolved product issue through consumer testing.", job: "Customer Service Representative" },
+      { text: "Collaborated with team of 3 in the development of customer feedback system.", job: "Server" },
+      { text: "Achieved $15,000 in revenue by introducing new sales strategies.", job: "Retail Sales Associate" }
+    ];
+
+    let currentFilter = '';
+
+    // Function to render suggestions
+    function renderSuggestions(filter = '') {
+      suggestions.innerHTML = '';
+      const filtered = filter ? suggestionsData.filter(item => item.job.toLowerCase().includes(filter.toLowerCase())) : suggestionsData;
+      filtered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'suggestion-card';
+        div.innerHTML = `
+          <button class="add-btn" onclick="addSuggestion('${item.text.replace(/'/g, "\\'")}')">+</button>
+          <div class="suggestion-text">${item.text}</div>
+        `;
+        suggestions.appendChild(div);
+      });
+    }
+
+    // Function to add suggestion to editor
+    function addSuggestion(text) {
+      const currentText = accomplishmentsEditor.innerHTML.trim();
+      if (currentText === '') {
+        accomplishmentsEditor.innerHTML = text;
+      } else {
+        accomplishmentsEditor.innerHTML = currentText + '<br><br>' + text;
+      }
+    }
+
+    // Function to filter suggestions
+    function filterSuggestions(job) {
+      currentFilter = job;
+      renderSuggestions(job);
+    }
+
+    // Search functionality
+    function performSearch() {
+      const query = searchInput.value.trim();
+      if (query) {
+        renderSuggestions(query);
+      } else {
+        renderSuggestions(currentFilter);
+      }
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('input', performSearch);
+
+    // Format text
+    function formatText(command) {
+      document.execCommand(command, false, null);
+      accomplishmentsEditor.focus();
+    }
+
+    // Back button
+    backBtn.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        alert('No previous page to go back to.');
+      }
+    });
+
+    // Save button
+    saveBtn.addEventListener('click', function() {
+      const content = accomplishmentsEditor.innerHTML.trim();
+      if (content === '') {
+        alert('Please add some accomplishments before saving.');
+        return;
+      }
+      localStorage.setItem('accomplishments', content);
+      alert('Accomplishments saved successfully!');
+    });
+
+    // Load saved content on page load
+    window.addEventListener('load', function() {
+      const saved = localStorage.getItem('accomplishments');
+      if (saved) {
+        accomplishmentsEditor.innerHTML = saved;
+      }
+    });
+
+    // Initialize
+    renderSuggestions();
+  </script>
+</body>
+</html>
